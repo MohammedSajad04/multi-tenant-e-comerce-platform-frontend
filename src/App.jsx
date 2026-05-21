@@ -1,15 +1,21 @@
 import {
+
   Routes,
   Route
-} from 'react-router-dom'
 
-import HomePage from './pages/public/HomePage'
-import LoginPage from './pages/auth/LoginPage'
-import RegisterPage from './pages/auth/RegisterPage'
-import CompanyPage from './pages/company/CompanyPage'
-import DashboardPage from './pages/dashboard/DashboardPage'
-import SuperAdminPage from './pages/superadmin/SuperAdminPage'
+} from "react-router-dom";
+
+
+import HomePage from "./pages/public/HomePage";
+
+import LoginPage from "./pages/auth/LoginPage";
+
 import CompanyRegisterPage from "./pages/auth/CompanyRegisterPage";
+
+import DashboardPage from "./pages/dashboard/DashboardPage";
+
+import ProtectedRoute from "./routes/ProtectedRoute";
+
 
 
 function App() {
@@ -23,36 +29,33 @@ function App() {
         element={<HomePage />}
       />
 
+
       <Route
         path="/login"
         element={<LoginPage />}
       />
 
-      <Route
-        path="/register"
-        element={<RegisterPage />}
-      />
 
       <Route
-        path="/company/:slug"
-        element={<CompanyPage />}
+        path="/company-register"
+        element={<CompanyRegisterPage />}
       />
 
-      <Route
-        path="/dashboard/:slug"
-        element={<DashboardPage />}
-      />
 
       <Route
-        path="/super-admin"
-        element={<SuperAdminPage />}
+        path="/dashboard"
+        element={
+
+          <ProtectedRoute>
+
+            <DashboardPage />
+
+          </ProtectedRoute>
+        }
       />
-      <Route
-          path="/company-register"
-          element={<CompanyRegisterPage />}
-      />
+
     </Routes>
   )
 }
 
-export default App
+export default App;

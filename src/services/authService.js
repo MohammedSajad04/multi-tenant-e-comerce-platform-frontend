@@ -10,3 +10,14 @@ export const loginUser = async (data) => {
 
     return response.data;
 };
+
+
+export const getCurrentUser = async () => {
+
+    const response = await api.get(
+
+        "accounts/me/"
+    );
+
+    return response.data;
+};

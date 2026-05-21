@@ -1,11 +1,19 @@
 import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-import { loginUser } from "../../services/authService";
+import {
+
+    loginUser,
+    getCurrentUser
+
+} from "../../services/authService";
 
 
 function LoginPage() {
 
     const [isLogin, setIsLogin] = useState(true);
+    const { setUser } = useAuth();
 
     const [formData, setFormData] = useState({
 
@@ -42,6 +50,7 @@ function LoginPage() {
                     password: formData.password,
                 });
 
+
                 localStorage.setItem(
 
                     "access",
@@ -58,9 +67,16 @@ function LoginPage() {
                 );
 
 
-                console.log(response);
+                    const user = await getCurrentUser();
 
-                alert("Login Success");
+                    setUser(user);
+
+                    console.log(user);
+
+                    alert("Login Success");
+                    navigate("/dashboard");
+
+
             } catch (error) {
 
                 console.log(error);
@@ -82,8 +98,6 @@ function LoginPage() {
         <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-black to-gray-800 px-5">
 
             <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-10">
-
-                {/* TOGGLE BUTTONS */}
 
                 <div className="flex mb-8 bg-gray-200 rounded-xl overflow-hidden">
 
@@ -112,8 +126,6 @@ function LoginPage() {
                 </div>
 
 
-                {/* TITLE */}
-
                 <h1 className="text-4xl font-bold text-center mb-8">
 
                     {isLogin ? "Welcome Back" : "Create Account"}
@@ -121,12 +133,8 @@ function LoginPage() {
                 </h1>
 
 
-                {/* FORM */}
-
                 <form onSubmit={handleSubmit}>
 
-
-                    {/* REGISTER ONLY */}
 
                     {!isLogin && (
 
@@ -163,8 +171,6 @@ function LoginPage() {
                     )}
 
 
-                    {/* COMMON FIELDS */}
-
                     <input
                         type="text"
                         name="username"
@@ -183,8 +189,6 @@ function LoginPage() {
                     />
 
 
-                    {/* REGISTER ONLY */}
-
                     {!isLogin && (
 
                         <input
@@ -197,8 +201,6 @@ function LoginPage() {
 
                     )}
 
-
-                    {/* BUTTON */}
 
                     <button
                         className="w-full bg-black text-white py-4 rounded-xl text-lg font-semibold hover:bg-gray-800 transition"
@@ -217,6 +219,4 @@ function LoginPage() {
 }
 
 export default LoginPage;
-
-
 
