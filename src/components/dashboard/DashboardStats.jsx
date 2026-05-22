@@ -1,3 +1,67 @@
-const DashboardStats = () => null;
+function DashboardStats({ dashboardData }) {
+
+    return (
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+
+
+            <div className="bg-white rounded-3xl shadow-lg p-8">
+
+                <h2 className="text-gray-500 text-xl mb-3">
+
+                    Total Products
+
+                </h2>
+
+
+                <h1 className="text-5xl font-bold">
+
+                    {dashboardData.total_products}
+
+                </h1>
+
+            </div>
+
+
+
+            <div className="bg-white rounded-3xl shadow-lg p-8">
+
+                <h2 className="text-gray-500 text-xl mb-3">
+
+                    Total Orders
+
+                </h2>
+
+
+                <h1 className="text-5xl font-bold">
+
+                    {dashboardData.total_orders}
+
+                </h1>
+
+            </div>
+
+
+
+            <div className="bg-white rounded-3xl shadow-lg p-8">
+
+                <h2 className="text-gray-500 text-xl mb-3">
+
+                    Revenue
+
+                </h2>
+
+
+                <h1 className="text-5xl font-bold">
+
+                    ₹ {dashboardData.total_revenue}
+
+                </h1>
+
+            </div>
+
+        </div>
+    )
+}
 
 export default DashboardStats;

@@ -13,7 +13,7 @@ import {
 
 
 
-function AdminRoute({ children }) {
+function SuperAdminRoute({ children }) {
 
     const { user } = useAuth();
 
@@ -26,7 +26,7 @@ function AdminRoute({ children }) {
 
 
 
-    if (user.role !== "company_admin") {
+    if (user.role !== "super_admin") {
 
         return <Navigate to="/" />;
     }
@@ -36,5 +36,4 @@ function AdminRoute({ children }) {
     return children;
 }
 
-export default AdminRoute;
-
+export default SuperAdminRoute;

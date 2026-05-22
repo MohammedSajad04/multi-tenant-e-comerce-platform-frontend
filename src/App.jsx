@@ -1,9 +1,4 @@
-import {
-
-  Routes,
-  Route
-
-} from "react-router-dom";
+import {Routes, Route} from "react-router-dom";
 
 
 import HomePage from "./pages/public/HomePage";
@@ -14,15 +9,38 @@ import CompanyRegisterPage from "./pages/auth/CompanyRegisterPage";
 
 import DashboardPage from "./pages/dashboard/DashboardPage";
 
-import ProtectedRoute from "./routes/ProtectedRoute";
+import ProductsPage from "./pages/dashboard/ProductsPage";
+
+import CompaniesPage from "./pages/public/CompaniesPage";
+
+import CompanyDetailsPage from "./pages/public/CompanyDetailsPage";
+
+import PendingCompaniesPage from "./pages/superadmin/PendingCompaniesPage";
+
+import TenantsPage from "./pages/superadmin/TenantsPage";
+
+import ProductDetailsPage from "./pages/public/ProductDetailsPage";
+
+import UserOrdersPage from "./pages/public/UserOrdersPage";
 
 
+import AdminRoute from "./routes/AdminRoute";
+
+import CustomerRoute from "./routes/CustomerRoute";
+
+import SuperAdminRoute from "./routes/SuperAdminRoute";
+
+import ShopPage from "./pages/public/ShopPage";
+
+import CartPage from "./pages/public/CartPage";
 
 function App() {
 
   return (
 
     <Routes>
+
+      {/* PUBLIC ROUTES */}
 
       <Route
         path="/"
@@ -43,14 +61,107 @@ function App() {
 
 
       <Route
+        path="/companies"
+        element={<CompaniesPage />}
+      />
+
+
+      <Route
+        path="/company/:id"
+        element={<CompanyDetailsPage />}
+      />
+
+
+      <Route
+        path="/product/:id"
+        element={<ProductDetailsPage />}
+      />
+
+      <Route
+        path="/shop"
+        element={
+          <CustomerRoute>
+            <ShopPage />
+          </CustomerRoute>
+        }
+      />
+      <Route
+        path="/cart"
+        element={
+          <CustomerRoute>
+
+            <CartPage />
+
+          </CustomerRoute>
+        }
+      />
+
+
+
+      {/* COMPANY ADMIN ROUTES */}
+
+      <Route
         path="/dashboard"
         element={
-
-          <ProtectedRoute>
+          <AdminRoute>
 
             <DashboardPage />
 
-          </ProtectedRoute>
+          </AdminRoute>
+        }
+      />
+
+
+      <Route
+        path="/products"
+        element={
+          <AdminRoute>
+
+            <ProductsPage />
+
+          </AdminRoute>
+        }
+      />
+
+
+
+      {/* CUSTOMER ROUTES */}
+
+      <Route
+        path="/my-orders"
+        element={
+          <CustomerRoute>
+
+            <UserOrdersPage />
+
+          </CustomerRoute>
+        }
+      />
+
+
+
+      {/* SUPER ADMIN ROUTES */}
+
+      <Route
+        path="/pending-companies"
+        element={
+          <SuperAdminRoute>
+
+            <PendingCompaniesPage />
+
+          </SuperAdminRoute>
+        }
+      />
+
+
+      <Route
+        path="/tenants"
+        element={
+          <SuperAdminRoute>
+
+            <TenantsPage />
+
+          </SuperAdminRoute>
         }
       />
 

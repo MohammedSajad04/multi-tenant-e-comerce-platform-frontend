@@ -1,4 +1,4 @@
-function TenantsPage() {
+function PendingCompaniesPage() {
 
     return (
 
@@ -6,7 +6,7 @@ function TenantsPage() {
 
             <h1 className="text-5xl font-bold mb-10">
 
-                All Tenants
+                Pending Company Requests
 
             </h1>
 
@@ -16,7 +16,7 @@ function TenantsPage() {
 
                 <p className="text-xl text-gray-600">
 
-                    Tenant management system UI here.
+                    Pending company approval system UI here.
 
                 </p>
 
@@ -26,4 +26,4 @@ function TenantsPage() {
     )
 }
 
-export default TenantsPage;
+export default PendingCompaniesPage;

@@ -2,21 +2,15 @@ import React from 'react'
 
 import ReactDOM from 'react-dom/client'
 
-import {
-
-  BrowserRouter
-
-} from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 
 import App from './App'
 
 import './index.css'
 
-import {
+import { AuthProvider } from './context/AuthContext'
 
-  AuthProvider
-
-} from './context/AuthContext'
+import { CartProvider } from "./context/CartContext"
 
 
 
@@ -24,13 +18,21 @@ ReactDOM.createRoot(
   document.getElementById('root')
 ).render(
 
-  <BrowserRouter>
+  <React.StrictMode>
 
-    <AuthProvider>
+    <BrowserRouter>
 
-      <App />
+      <AuthProvider>
 
-    </AuthProvider>
+        <CartProvider>
 
-  </BrowserRouter>
+          <App />
+
+        </CartProvider>
+
+      </AuthProvider>
+
+    </BrowserRouter>
+
+  </React.StrictMode>
 )

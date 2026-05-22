@@ -1,6 +1,9 @@
 import { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
+
 import { useNavigate } from "react-router-dom";
+
+import { useAuth } from "../../context/AuthContext";
+
 
 import {
 
@@ -10,10 +13,16 @@ import {
 } from "../../services/authService";
 
 
+
 function LoginPage() {
 
     const [isLogin, setIsLogin] = useState(true);
+
     const { setUser } = useAuth();
+
+    const navigate = useNavigate();
+
+
 
     const [formData, setFormData] = useState({
 
@@ -26,19 +35,24 @@ function LoginPage() {
     });
 
 
+
     const handleChange = (e) => {
 
         setFormData({
 
             ...formData,
+
             [e.target.name]: e.target.value,
         });
     };
 
 
+
     const handleSubmit = async (e) => {
 
         e.preventDefault();
+
+
 
         if (isLogin) {
 
@@ -47,8 +61,10 @@ function LoginPage() {
                 const response = await loginUser({
 
                     username: formData.username,
+
                     password: formData.password,
                 });
+
 
 
                 localStorage.setItem(
@@ -59,6 +75,7 @@ function LoginPage() {
                 );
 
 
+
                 localStorage.setItem(
 
                     "refresh",
@@ -67,15 +84,39 @@ function LoginPage() {
                 );
 
 
-                    const user = await getCurrentUser();
 
-                    setUser(user);
+                const user = await getCurrentUser();
 
-                    console.log(user);
 
-                    alert("Login Success");
+
+                setUser(user);
+
+
+
+                console.log(user);
+
+
+
+                alert("Login Success");
+
+
+
+                if (user.role === "company_admin") {
+
                     navigate("/dashboard");
 
+                } else if (user.role === "customer") {
+
+                    navigate("/shop");
+
+                } else if (user.role === "super_admin") {
+
+                    navigate("/pending-companies");
+
+                } else {
+
+                    navigate("/");
+                }
 
             } catch (error) {
 
@@ -93,11 +134,13 @@ function LoginPage() {
     };
 
 
+
     return (
 
         <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-black to-gray-800 px-5">
 
             <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-10">
+
 
                 <div className="flex mb-8 bg-gray-200 rounded-xl overflow-hidden">
 
@@ -109,8 +152,12 @@ function LoginPage() {
                                 : "bg-transparent text-black"
                         }`}
                     >
+
                         Login
+
                     </button>
+
+
 
                     <button
                         onClick={() => setIsLogin(false)}
@@ -120,10 +167,13 @@ function LoginPage() {
                                 : "bg-transparent text-black"
                         }`}
                     >
+
                         Register
+
                     </button>
 
                 </div>
+
 
 
                 <h1 className="text-4xl font-bold text-center mb-8">
@@ -131,6 +181,7 @@ function LoginPage() {
                     {isLogin ? "Welcome Back" : "Create Account"}
 
                 </h1>
+
 
 
                 <form onSubmit={handleSubmit}>
@@ -171,6 +222,7 @@ function LoginPage() {
                     )}
 
 
+
                     <input
                         type="text"
                         name="username"
@@ -202,6 +254,7 @@ function LoginPage() {
                     )}
 
 
+
                     <button
                         className="w-full bg-black text-white py-4 rounded-xl text-lg font-semibold hover:bg-gray-800 transition"
                     >
@@ -219,4 +272,3 @@ function LoginPage() {
 }
 
 export default LoginPage;
-
