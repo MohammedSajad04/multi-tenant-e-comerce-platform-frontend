@@ -5,13 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 
 
-import {
+import { loginUser, getCurrentUser} from "../../services/authService";
 
-    loginUser,
-    getCurrentUser
-
-} from "../../services/authService";
-
+import {isSuperAdmin,isCompanyAdmin,isCustomer} from "../../utils/authRoles";
 
 
 function LoginPage() {
@@ -83,17 +79,31 @@ function LoginPage() {
                     response.refresh
                 );
 
+                localStorage.setItem(
+
+                    "last_login_username",
+
+                    formData.username
+                );
+
 
 
                 const user = await getCurrentUser();
 
+                const loggedInUser = {
+
+                    ...user,
+                    loginUsername: formData.username,
+                };
 
 
-                setUser(user);
+
+                setUser(loggedInUser);
 
 
 
-                console.log(user);
+                console.log("Logged in user:", loggedInUser);
+                console.log("Is super admin:", isSuperAdmin(loggedInUser));
 
 
 
@@ -101,19 +111,25 @@ function LoginPage() {
 
 
 
-                if (user.role === "company_admin") {
+                if (isSuperAdmin(loggedInUser)) {
+
+                    navigate("/super-admin", { replace: true });
+
+                }
+
+                else if (isCompanyAdmin(loggedInUser)) {
 
                     navigate("/dashboard");
 
-                } else if (user.role === "customer") {
+                }
+
+                else if (isCustomer(loggedInUser)) {
 
                     navigate("/shop");
 
-                } else if (user.role === "super_admin") {
+                }
 
-                    navigate("/pending-companies");
-
-                } else {
+                else {
 
                     navigate("/");
                 }
@@ -125,16 +141,11 @@ function LoginPage() {
                 alert("Invalid Credentials");
             }
 
-        } else {
-
-            console.log(formData);
-
-            alert("Register API later");
         }
+
+
     };
-
-
-
+    
     return (
 
         <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-black to-gray-800 px-5">

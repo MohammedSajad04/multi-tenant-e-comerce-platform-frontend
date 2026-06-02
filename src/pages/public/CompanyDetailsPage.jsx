@@ -11,7 +11,7 @@ function CompanyDetailsPage() {
 
     useEffect(() => {
         fetchProducts();
-    }, []);
+    }, [id]);
 
 
     const fetchProducts = async () => {
@@ -25,11 +25,10 @@ function CompanyDetailsPage() {
         }
     };
 
-
     return (
         <div className="min-h-screen bg-gray-100 p-10">
             <h1 className="text-5xl font-bold mb-10">
-                Company Products
+                Products
             </h1>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -38,6 +37,16 @@ function CompanyDetailsPage() {
                         key={product.id}
                         className="bg-white p-8 rounded-3xl shadow-lg"
                     >
+                        {product.image && (
+
+                            <img
+                                src={`http://127.0.0.1:8000${product.image}`}
+                                alt={product.name}
+                                className="w-full h-56 object-cover rounded-2xl mb-5"
+                            />
+
+                        )}
+
                         <h2 className="text-3xl font-bold mb-4">
                             {product.name}
                         </h2>

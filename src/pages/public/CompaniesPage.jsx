@@ -79,8 +79,6 @@ function CompaniesPage() {
                             {company.address}
 
                         </p>
-
-
                         <Link
                             to={`/company/${company.id}`}
                             className="bg-black text-white px-6 py-3 rounded-xl inline-block"

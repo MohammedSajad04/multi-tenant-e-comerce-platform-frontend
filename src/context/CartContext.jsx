@@ -27,9 +27,10 @@ export function CartProvider({ children }) {
         );
 
 
+
         if (existing) {
 
-            const updatedCart = cartItems.map((item) =>
+            const updated = cartItems.map((item) =>
 
                 item.id === product.id
 
@@ -41,7 +42,7 @@ export function CartProvider({ children }) {
                     : item
             );
 
-            setCartItems(updatedCart);
+            setCartItems(updated);
 
         } else {
 
@@ -55,6 +56,46 @@ export function CartProvider({ children }) {
                 }
             ]);
         }
+    };
+
+
+
+
+    const increaseQuantity = (id) => {
+
+        const updated = cartItems.map((item) =>
+
+            item.id === id
+
+                ? {
+                    ...item,
+                    quantity: item.quantity + 1,
+                }
+
+                : item
+        );
+
+        setCartItems(updated);
+    };
+
+
+
+
+    const decreaseQuantity = (id) => {
+
+        const updated = cartItems.map((item) =>
+
+            item.id === id && item.quantity > 1
+
+                ? {
+                    ...item,
+                    quantity: item.quantity - 1,
+                }
+
+                : item
+        );
+
+        setCartItems(updated);
     };
 
 
@@ -88,6 +129,8 @@ export function CartProvider({ children }) {
                 addToCart,
                 removeFromCart,
                 clearCart,
+                increaseQuantity,
+                decreaseQuantity,
             }}
         >
 

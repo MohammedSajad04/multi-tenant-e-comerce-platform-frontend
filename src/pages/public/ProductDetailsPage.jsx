@@ -1,39 +1,19 @@
-import {
-
-    useEffect,
-    useState
-
-} from "react";
-
-
-import {
-
-    useParams
-
-} from "react-router-dom";
-
-
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import api from "../../services/api";
-
-import {
-
-    createOrder
-
-} from "../../services/productService";
-
-
+import { useCart } from "../../context/CartContext";
 
 function ProductDetailsPage() {
 
     const { id } = useParams();
 
+    const navigate = useNavigate();
+
+    const { addToCart } = useCart();
 
     const [product, setProduct] = useState(null);
 
     const [quantity, setQuantity] = useState(1);
-
-
-
 
     useEffect(() => {
 
@@ -41,23 +21,15 @@ function ProductDetailsPage() {
 
     }, []);
 
-
-
-
     const fetchProduct = async () => {
 
         try {
 
             const response = await api.get(
-
-                `products/list/?tenant=${id}`
+                `products/detail/${id}/`
             );
 
-
-            if (response.data.length > 0) {
-
-                setProduct(response.data[0]);
-            }
+            setProduct(response.data);
 
         } catch (error) {
 
@@ -65,113 +37,127 @@ function ProductDetailsPage() {
         }
     };
 
+    const handleQuantityChange = (e) => {
 
+        const value = Number(e.target.value);
 
-    const handleOrder = async () => {
+        if (value < 1) {
 
-        try {
+            setQuantity(1);
 
-            await createOrder(
-
-                product.id,
-                quantity
-            );
-
-            alert("Order Created Successfully 🔥");
-
-        } catch (error) {
-
-            console.log(error);
-
-            alert("Order Failed");
+            return;
         }
+
+        if (value > product.stock) {
+
+            setQuantity(product.stock);
+
+            return;
+        }
+
+        setQuantity(value);
     };
 
+    const handleAddToCart = () => {
 
+        addToCart({
+
+            ...product,
+
+            quantity: quantity
+
+        });
+
+        navigate("/cart");
+    };
 
     if (!product) {
 
         return (
 
-            <div className="p-10">
+            <div className="min-h-screen flex items-center justify-center">
 
                 Loading...
+
             </div>
-        )
+        );
     }
-
-
 
     return (
 
-        <div className="min-h-screen bg-gray-100 p-10 flex justify-center items-center">
+        <div className="min-h-screen bg-gray-100 flex justify-center items-center p-8">
 
-            <div className="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-2xl">
+            <div className="bg-white p-10 rounded-2xl border border-gray-200 shadow-sm w-full max-w-2xl">
 
-                <h1 className="text-5xl font-bold mb-6">
+                <h1 className="text-4xl font-bold mb-4">
 
                     {product.name}
 
                 </h1>
 
-
-                <p className="text-gray-600 text-xl mb-6">
+                <p className="text-gray-600 mb-6">
 
                     {product.description}
 
                 </p>
 
-
-                <h2 className="text-4xl font-bold mb-6">
+                <h2 className="text-3xl font-bold mb-4">
 
                     ₹ {product.price}
 
                 </h2>
 
+                <p className="text-gray-500 mb-8">
 
-                <p className="mb-8 text-lg">
-
-                    Stock: {product.stock}
+                    Available Stock: {product.stock}
 
                 </p>
 
+                <div className="flex items-center gap-4 mb-8">
 
-
-                <div className="flex items-center gap-5 mb-8">
-
-                    <label className="text-xl">
+                    <label className="font-medium">
 
                         Quantity
-                    </label>
 
+                    </label>
 
                     <input
                         type="number"
                         min="1"
+                        max={product.stock}
                         value={quantity}
-                        onChange={(e) =>
-                            setQuantity(e.target.value)
-                        }
-                        className="border p-3 rounded-xl w-32"
+                        onChange={handleQuantityChange}
+                        className="border border-gray-300 p-3 rounded-xl w-32"
                     />
 
                 </div>
 
+                <div className="flex gap-4">
 
+                    <button
+                        onClick={handleAddToCart}
+                        className="flex-1 bg-black text-white py-4 rounded-xl hover:bg-gray-800 transition"
+                    >
 
-                <button
-                    onClick={handleOrder}
-                    className="w-full bg-black text-white py-5 rounded-2xl text-xl font-bold"
-                >
+                        Add To Cart
 
-                    Buy Now
+                    </button>
 
-                </button>
+                    <button
+                        onClick={() => navigate("/cart")}
+                        className="flex-1 border border-black py-4 rounded-xl hover:bg-gray-100 transition"
+                    >
+
+                        View Cart
+
+                    </button>
+
+                </div>
 
             </div>
 
         </div>
-    )
+    );
 }
 
 export default ProductDetailsPage;

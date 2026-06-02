@@ -12,6 +12,13 @@ import {
 } from "../context/AuthContext";
 
 
+import {
+
+    isSuperAdmin
+
+} from "../utils/authRoles";
+
+
 
 function SuperAdminRoute({ children }) {
 
@@ -26,7 +33,7 @@ function SuperAdminRoute({ children }) {
 
 
 
-    if (user.role !== "super_admin") {
+    if (!isSuperAdmin(user)) {
 
         return <Navigate to="/" />;
     }

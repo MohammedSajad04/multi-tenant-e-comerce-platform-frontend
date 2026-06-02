@@ -1,27 +1,17 @@
 import {
-
     Link,
     useLocation
-
 } from "react-router-dom";
 
-
 import {
-
     useAuth
-
 } from "../../context/AuthContext";
-
-
 
 function Sidebar() {
 
     const location = useLocation();
 
     const { logout, user } = useAuth();
-
-
-
 
     const menuItems = [
 
@@ -44,14 +34,7 @@ function Sidebar() {
             name: "Customers",
             path: "/customers",
         },
-
-        {
-            name: "Companies",
-            path: "/companies",
-        },
     ];
-
-
 
     return (
 
@@ -59,22 +42,20 @@ function Sidebar() {
 
             <div>
 
-                <h1 className="text-4xl font-bold mb-12">
+                <h1 className="text-3xl font-bold mb-10">
 
-                    SAJAD
+                    SaaS Platform
 
                 </h1>
 
-
-
-                <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-3">
 
                     {menuItems.map((item) => (
 
                         <Link
                             key={item.path}
                             to={item.path}
-                            className={`px-5 py-4 rounded-2xl transition ${
+                            className={`px-5 py-4 rounded-xl transition ${
                                 location.pathname === item.path
                                     ? "bg-white text-black"
                                     : "bg-gray-900 hover:bg-gray-800"
@@ -84,24 +65,39 @@ function Sidebar() {
                             {item.name}
 
                         </Link>
+
                     ))}
+
+                    {user?.role === "super_admin" && (
+
+                        <Link
+                            to="/companies"
+                            className={`px-5 py-4 rounded-xl transition ${
+                                location.pathname === "/companies"
+                                    ? "bg-white text-black"
+                                    : "bg-gray-900 hover:bg-gray-800"
+                            }`}
+                        >
+
+                            Companies
+
+                        </Link>
+
+                    )}
 
                 </div>
 
             </div>
 
-
-
             <div>
 
-                <div className="mb-5 bg-gray-900 p-4 rounded-2xl">
+                <div className="mb-5 bg-gray-900 p-4 rounded-xl">
 
-                    <h2 className="font-bold text-xl">
+                    <h2 className="font-bold">
 
                         {user?.username}
 
                     </h2>
-
 
                     <p className="text-gray-400 text-sm">
 
@@ -109,13 +105,17 @@ function Sidebar() {
 
                     </p>
 
+                    <p className="text-xs text-gray-500 mt-2">
+
+                        {user?.role}
+
+                    </p>
+
                 </div>
-
-
 
                 <button
                     onClick={logout}
-                    className="w-full bg-red-500 py-4 rounded-2xl font-bold"
+                    className="w-full bg-red-500 hover:bg-red-600 py-4 rounded-xl font-bold transition"
                 >
 
                     Logout
@@ -125,7 +125,7 @@ function Sidebar() {
             </div>
 
         </div>
-    )
+    );
 }
 
 export default Sidebar;

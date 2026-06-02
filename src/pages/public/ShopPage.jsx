@@ -29,6 +29,8 @@ function ShopPage() {
 
     const [search, setSearch] = useState("");
 
+    const [selectedCategory, setSelectedCategory] = useState("All");
+
 
     const { addToCart } = useCart();
 
@@ -70,11 +72,14 @@ function ShopPage() {
 
             <div className="bg-black text-white p-6 flex justify-between items-center">
 
-                <h1 className="text-4xl font-bold">
+                <Link
+                    to="/shop"
+                    className="text-4xl font-bold"
+                >
 
                     SAJAD SHOP
 
-                </h1>
+                </Link>
 
 
 
@@ -127,22 +132,76 @@ function ShopPage() {
 
 
 
+                <div className="flex gap-4 mb-10 flex-wrap">
+
+                    {["All", "Mobile", "Electronics", "Fashion", "Perfume"].map(
+
+                        (category) => (
+
+                            <button
+                                key={category}
+                                onClick={() =>
+                                    setSelectedCategory(category)
+                                }
+                                className={`px-6 py-3 rounded-2xl ${
+                                    selectedCategory === category
+                                        ? "bg-black text-white"
+                                        : "bg-white"
+                                }`}
+                            >
+
+                                {category}
+
+                            </button>
+                        )
+                    )}
+
+                </div>
+
+
+
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
                     {products
-                        .filter((product) =>
-                            product.name
+                        .filter((product) => {
+
+                            const matchesSearch = product.name
                                 .toLowerCase()
                                 .includes(
                                     search.toLowerCase()
-                                )
-                        )
+                                );
+
+
+
+                            const matchesCategory =
+
+                                selectedCategory === "All"
+
+                                ||
+
+                                product.category === selectedCategory;
+
+
+
+                            return matchesSearch && matchesCategory;
+                        })
+
                         .map((product) => (
 
                             <div
                                 key={product.id}
                                 className="bg-white p-8 rounded-3xl shadow-lg"
                             >
+
+                                {product.image && (
+
+                                    <img
+                                        src={`http://127.0.0.1:8000${product.image}`}
+                                        alt={product.name}
+                                        className="w-full h-56 object-cover rounded-2xl mb-5"
+                                    />
+
+                                )}
 
                                 <h2 className="text-3xl font-bold mb-4">
 
@@ -154,6 +213,13 @@ function ShopPage() {
                                 <p className="text-gray-500 mb-4">
 
                                     {product.description}
+
+                                </p>
+
+
+                                <p className="text-sm bg-gray-200 inline-block px-4 py-2 rounded-full mb-4">
+
+                                    {product.category}
 
                                 </p>
 

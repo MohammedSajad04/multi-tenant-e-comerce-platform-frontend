@@ -1,23 +1,14 @@
 import {
-
     useEffect,
     useState
-
 } from "react";
 
-
-import DashboardLayout from "../../layouts/DashboardLayout";
-
 import api from "../../services/api";
-
-
+import Navbar from "../../components/public/Navbar";
 
 function UserOrdersPage() {
 
     const [orders, setOrders] = useState([]);
-
-
-
 
     useEffect(() => {
 
@@ -25,16 +16,12 @@ function UserOrdersPage() {
 
     }, []);
 
-
-
-
     const fetchOrders = async () => {
 
         try {
 
             const response = await api.get(
-
-                "products/company-orders/"
+                "products/my-orders/"
             );
 
             setOrders(response.data);
@@ -45,67 +32,63 @@ function UserOrdersPage() {
         }
     };
 
-
-
     return (
+        <>
+            <Navbar />
 
-        <DashboardLayout>
-
-            <div className="p-10">
+            <div className="min-h-screen bg-gray-100 p-10">
 
                 <h1 className="text-5xl font-bold mb-10">
-
                     My Orders
-
                 </h1>
 
+                <div className="space-y-6">
 
+                    {orders.length > 0 ? (
 
-                <div className="flex flex-col gap-6">
+                        orders.map((order) => (
 
-                    {orders.map((order) => (
+                            <div
+                                key={order.id}
+                                className="bg-white rounded-2xl shadow p-6"
+                            >
 
-                        <div
-                            key={order.id}
-                            className="bg-white p-8 rounded-3xl shadow-lg"
-                        >
+                                <h2 className="text-2xl font-bold mb-2">
+                                    {order.product_name}
+                                </h2>
 
-                            <h2 className="text-3xl font-bold mb-3">
+                                <p className="text-gray-600">
+                                    Quantity: {order.quantity}
+                                </p>
 
-                                {order.product}
+                                <p className="text-gray-600">
+                                    Total: ₹ {order.total_price}
+                                </p>
 
-                            </h2>
+                                <p className="mt-3">
+                                    Status:
+                                    <span className="ml-2 font-semibold">
+                                        {order.status}
+                                    </span>
+                                </p>
 
+                            </div>
 
-                            <p className="text-gray-500 mb-2">
+                        ))
 
-                                Quantity: {order.quantity}
+                    ) : (
 
-                            </p>
-
-
-                            <p className="font-bold mb-3">
-
-                                ₹ {order.total_price}
-
-                            </p>
-
-
-                            <span className="bg-yellow-100 text-yellow-700 px-5 py-2 rounded-full">
-
-                                {order.status}
-
-                            </span>
-
+                        <div className="bg-white rounded-2xl p-8 shadow">
+                            No Orders Found
                         </div>
-                    ))}
+
+                    )}
 
                 </div>
 
             </div>
-
-        </DashboardLayout>
-    )
+        </>
+    );
 }
 
 export default UserOrdersPage;

@@ -12,6 +12,16 @@ export const getProducts = async (tenantId) => {
     return response.data;
 };
 
+export const getCompanyProducts = async () => {
+
+    const response = await api.get(
+
+        "products/company-products/"
+    );
+
+    return response.data;
+};
+
 
 
 export const createProduct = async (data) => {
@@ -72,6 +82,26 @@ export const createOrder = async (
 
         {
             quantity,
+        }
+    );
+
+    return response.data;
+};
+
+
+export const updateOrderStatus = async (
+
+    orderId,
+    status
+
+) => {
+
+    const response = await api.put(
+
+        `products/update-order/${orderId}/`,
+
+        {
+            status
         }
     );
 
