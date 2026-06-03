@@ -1,23 +1,16 @@
 import {
-
     useEffect,
     useState
-
 } from "react";
 
-
 import SuperAdminLayout from "../../layouts/SuperAdminLayout";
-
 import api from "../../services/api";
-
-
 
 function ManageCompaniesPage() {
 
     const [companies, setCompanies] = useState([]);
 
-
-
+    const [selectedCompany, setSelectedCompany] = useState(null);
 
     useEffect(() => {
 
@@ -25,19 +18,13 @@ function ManageCompaniesPage() {
 
     }, []);
 
-
-
-
     const fetchCompanies = async () => {
 
         try {
 
             const response = await api.get(
-
                 "tenants/superadmin/companies/"
             );
-
-
 
             setCompanies(response.data);
 
@@ -47,21 +34,17 @@ function ManageCompaniesPage() {
         }
     };
 
-
-
-
     const approveCompany = async (id) => {
 
         try {
 
             await api.put(
-
                 `tenants/superadmin/approve/${id}/`
             );
 
-
-
             fetchCompanies();
+
+            setSelectedCompany(null);
 
         } catch (error) {
 
@@ -69,88 +52,259 @@ function ManageCompaniesPage() {
         }
     };
 
-
-
     return (
 
         <SuperAdminLayout>
 
-            <h1 className="text-5xl font-bold mb-10">
+            <div className="mb-10">
 
-                Manage Companies 🏢
+                <h1 className="text-4xl font-bold">
 
-            </h1>
+                    Manage Companies
 
+                </h1>
 
+                <p className="text-gray-500 mt-2">
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    View and manage all companies on the platform
+
+                </p>
+
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
                 {companies.map((company) => (
 
                     <div
                         key={company.id}
-                        className="bg-white p-8 rounded-3xl shadow-lg"
+                        className="bg-white rounded-2xl shadow p-6 border"
                     >
 
-                        <h2 className="text-3xl font-bold mb-4">
+                        <h2 className="text-2xl font-bold mb-2">
 
-                            {company.name}
+                            {company.company_name}
 
                         </h2>
 
+                        <p className="text-gray-600 mb-4">
 
-
-                        <p className="text-gray-500 mb-4">
-
-                            {company.description}
+                            {company.business_type}
                         </p>
 
+                        <span
+                            className={`px-4 py-2 rounded-full text-sm ${
+                                company.status === "approved"
+                                    ? "bg-green-100 text-green-700"
+                                    : "bg-yellow-100 text-yellow-700"
+                            }`}
+                        >
 
+                            {company.status}
 
-                        <div className="mb-6">
+                        </span>
 
-                            {company.is_approved ? (
-
-                                <span className="bg-green-100 text-green-700 px-5 py-2 rounded-full">
-
-                                    Approved
-
-                                </span>
-
-                            ) : (
-
-                                <span className="bg-yellow-100 text-yellow-700 px-5 py-2 rounded-full">
-
-                                    Pending
-
-                                </span>
-                            )}
-
-                        </div>
-
-
-
-                        {!company.is_approved && (
+                        <div className="mt-5">
 
                             <button
                                 onClick={() =>
-                                    approveCompany(company.id)
+                                    setSelectedCompany(company)
                                 }
-                                className="bg-black text-white px-6 py-4 rounded-2xl"
+                                className="bg-black text-white px-5 py-3 rounded-xl"
                             >
 
-                                Approve Company
+                                View Details
 
                             </button>
-                        )}
+
+                        </div>
 
                     </div>
+
                 ))}
 
             </div>
 
+            {selectedCompany && (
+
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+
+                    <div className="bg-white w-[700px] rounded-3xl p-8">
+
+                        <div className="flex justify-between items-center mb-8">
+
+                            <h2 className="text-3xl font-bold">
+
+                                {selectedCompany.company_name}
+
+                            </h2>
+
+                            <button
+                                onClick={() =>
+                                    setSelectedCompany(null)
+                                }
+                                className="text-2xl"
+                            >
+
+                                ×
+
+                            </button>
+
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-6">
+
+                            <div>
+
+                                <p className="font-bold">
+                                    Owner
+                                </p>
+
+                                <p>
+                                    {selectedCompany.owner_name}
+                                </p>
+
+                            </div>
+
+                            <div>
+
+                                <p className="font-bold">
+                                    Email
+                                </p>
+
+                                <p>
+                                    {selectedCompany.company_email}
+                                </p>
+
+                            </div>
+
+                            <div>
+
+                                <p className="font-bold">
+                                    Phone
+                                </p>
+
+                                <p>
+                                    {selectedCompany.phone_number}
+                                </p>
+
+                            </div>
+
+                            <div>
+
+                                <p className="font-bold">
+                                    Business Type
+                                </p>
+
+                                <p>
+                                    {selectedCompany.business_type}
+                                </p>
+
+                            </div>
+
+                            <div>
+
+                                <p className="font-bold">
+                                    Registration Number
+                                </p>
+
+                                <p>
+                                    {selectedCompany.registration_number}
+                                </p>
+
+                            </div>
+
+                            <div>
+
+                                <p className="font-bold">
+                                    Status
+                                </p>
+
+                                <p>
+                                    {selectedCompany.status}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <div className="mt-6">
+
+                            <p className="font-bold mb-2">
+
+                                Address
+
+                            </p>
+
+                            <p>
+
+                                {selectedCompany.address}
+
+                            </p>
+
+                        </div>
+
+                        <div className="mt-6">
+
+                            <p className="font-bold mb-2">
+
+                                Description
+
+                            </p>
+
+                            <p>
+
+                                {selectedCompany.company_description}
+
+                            </p>
+
+                        </div>
+
+                        <div className="mt-6">
+
+                            <p className="font-bold mb-2">
+
+                                Modules
+
+                            </p>
+
+                            <p>
+
+                                {selectedCompany.modules?.join(", ")}
+
+                            </p>
+
+                        </div>
+
+                        {selectedCompany.status === "pending" && (
+
+                            <div className="mt-8">
+
+                                <button
+                                    onClick={() =>
+                                        approveCompany(
+                                            selectedCompany.id
+                                        )
+                                    }
+                                    className="bg-green-600 text-white px-6 py-3 rounded-xl"
+                                >
+
+                                    Approve Company
+
+                                </button>
+
+                            </div>
+
+                        )}
+
+                    </div>
+
+                </div>
+
+            )}
+
         </SuperAdminLayout>
-    )
+    );
 }
 
 export default ManageCompaniesPage;

@@ -1,26 +1,20 @@
 import {
-
     useEffect,
     useState
-
 } from "react";
 
-import {
+import DashboardLayout from "../../layouts/DashboardLayout";
 
+import {
     getCompanyOrders,
     updateOrderStatus
-
 } from "../../services/productService";
-
-
 
 function OrdersDashboard() {
 
     const [orders, setOrders] = useState([]);
 
     const [loading, setLoading] = useState(true);
-
-
 
     const fetchOrders = async () => {
 
@@ -40,16 +34,11 @@ function OrdersDashboard() {
         }
     };
 
-
-
-
     useEffect(() => {
 
         fetchOrders();
 
     }, []);
-
-
 
     const handleStatusChange = async (
 
@@ -76,35 +65,37 @@ function OrdersDashboard() {
         }
     };
 
-
-
     if (loading) {
 
         return (
 
-            <div className="min-h-screen flex items-center justify-center">
+            <DashboardLayout>
 
-                Loading Orders...
+                <div className="flex items-center justify-center min-h-[500px]">
 
-            </div>
+                    <h1 className="text-2xl font-bold">
+
+                        Loading Orders...
+
+                    </h1>
+
+                </div>
+
+            </DashboardLayout>
         );
     }
 
-
-
     return (
 
-        <div className="min-h-screen bg-gray-100 p-8">
+        <DashboardLayout>
 
-            <div className="max-w-7xl mx-auto">
+            <div>
 
                 <h1 className="text-4xl font-bold mb-8">
 
                     Orders Management
 
                 </h1>
-
-
 
                 <div className="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
 
@@ -159,8 +150,6 @@ function OrdersDashboard() {
                             </tr>
 
                         </thead>
-
-
 
                         <tbody>
 
@@ -246,6 +235,7 @@ function OrdersDashboard() {
                                     </td>
 
                                 </tr>
+
                             ))}
 
                         </tbody>
@@ -256,7 +246,7 @@ function OrdersDashboard() {
 
             </div>
 
-        </div>
+        </DashboardLayout>
     );
 }
 

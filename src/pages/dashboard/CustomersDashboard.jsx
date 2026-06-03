@@ -1,10 +1,12 @@
+import DashboardLayout from "../../layouts/DashboardLayout";
+
 function CustomersDashboard() {
 
     return (
 
-        <div className="min-h-screen bg-gray-100 p-8">
+        <DashboardLayout>
 
-            <div className="max-w-7xl mx-auto">
+            <div>
 
                 <h1 className="text-4xl font-bold mb-8">
 
@@ -12,9 +14,15 @@ function CustomersDashboard() {
 
                 </h1>
 
+                <div className="bg-white p-8 rounded-2xl shadow">
+
+                    Customer list will appear here.
+
+                </div>
+
             </div>
 
-        </div>
+        </DashboardLayout>
     );
 }
 

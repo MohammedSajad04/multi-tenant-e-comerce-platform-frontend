@@ -1,272 +1,187 @@
-import {
-
-    useEffect,
-    useState
-
-} from "react";
-
-
-import {
-
-    Link
-
-} from "react-router-dom";
-
-
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../../services/api";
-
-import {
-
-    useCart
-
-} from "../../context/CartContext";
-
-
+import { useCart } from "../../context/CartContext";
+import Navbar from "../../components/public/Navbar";
 
 function ShopPage() {
-
     const [products, setProducts] = useState([]);
-
     const [search, setSearch] = useState("");
-
     const [selectedCategory, setSelectedCategory] = useState("All");
-
-
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    
     const { addToCart } = useCart();
 
-
-
+    const categories = ["All", "Mobile", "Electronics"];
 
     useEffect(() => {
-
         fetchProducts();
-
     }, []);
 
-
-
-
     const fetchProducts = async () => {
-
         try {
-
-            const response = await api.get(
-
-                "products/list/?tenant=1"
-            );
-
+            const response = await api.get("products/list/?tenant=1");
             setProducts(response.data);
+            if (response.data.length > 0) {
 
+            localStorage.setItem(
+                "company_name",
+                response.data[0].company_name
+            );
+        }
         } catch (error) {
-
             console.log(error);
         }
     };
 
-
-
     return (
+        <div className="min-h-screen bg-gray-50 font-sans">
+            <Navbar
+                companyName={
+                    localStorage.getItem("company_name")
+                }
+            />
 
-        <div className="min-h-screen bg-gray-100">
-
-
-            <div className="bg-black text-white p-6 flex justify-between items-center">
-
-                <Link
-                    to="/shop"
-                    className="text-4xl font-bold"
-                >
-
-                    SAJAD SHOP
-
-                </Link>
-
-
-
-                <div className="flex gap-5">
-
-                    <Link
-                        to="/cart"
-                        className="bg-white text-black px-6 py-3 rounded-xl font-bold"
-                    >
-
-                        Cart
-
-                    </Link>
-
-
-                    <Link
-                        to="/my-orders"
-                        className="bg-white text-black px-6 py-3 rounded-xl font-bold"
-                    >
-
-                        My Orders
-
-                    </Link>
-
+            {/* 1. FULL SCREEN Tenant Video Banner Space */}
+            {/* Moved outside the inner container to stretch edge-to-edge */}
+            <div className="w-full h-[85vh] bg-gray-900 relative flex items-center justify-center overflow-hidden shadow-2xl">
+                
+                {/* NOTE: When you add your <video> tag, apply these classes to it: */}
+                {/* <video autoPlay loop muted className="absolute inset-0 w-full h-full object-cover z-0" src="..." /> */}
+                
+                <div className="absolute inset-0 bg-black/50 flex flex-col items-center justify-center text-center p-6 z-10 transition-opacity">
+                    <span className="text-white/90 text-6xl md:text-8xl mb-6 drop-shadow-lg">▶️</span>
+                    <h2 className="text-white text-4xl md:text-6xl font-extrabold tracking-wide drop-shadow-xl mb-4">
+                        Your Video Banner Goes Here
+                    </h2>
+                    <p className="text-gray-200 text-lg md:text-2xl font-light">
+                        Experience the best quality products.
+                    </p>
+                    
+                    {/* Bouncing Scroll Indicator */}
+                    <div className="absolute bottom-10 animate-bounce flex flex-col items-center text-white/70">
+                        <span className="text-sm uppercase tracking-widest font-bold mb-2">Scroll Down</span>
+                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                    </div>
                 </div>
-
             </div>
 
+            {/* Main Content Container */}
+            <div className="max-w-7xl mx-auto p-6 md:p-10 mt-8">
+                
+                {/* 2. Header, Filter Dropdown, and Search Input */}
+                <div className="flex flex-col lg:flex-row justify-between items-center mb-10 gap-6">
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 drop-shadow-sm w-full lg:w-auto">
+                        Explore Products 🔥
+                    </h1>
 
-
-            <div className="p-10">
-
-                <h1 className="text-5xl font-bold mb-10">
-
-                    Explore Products 🔥
-
-                </h1>
-
-
-
-                <input
-                    type="text"
-                    placeholder="Search Products..."
-                    value={search}
-                    onChange={(e) =>
-                        setSearch(e.target.value)
-                    }
-                    className="w-full border p-5 rounded-2xl mb-10"
-                />
-
-
-
-                <div className="flex gap-4 mb-10 flex-wrap">
-
-                    {["All", "Mobile", "Electronics", "Fashion", "Perfume"].map(
-
-                        (category) => (
-
-                            <button
-                                key={category}
-                                onClick={() =>
-                                    setSelectedCategory(category)
-                                }
-                                className={`px-6 py-3 rounded-2xl ${
-                                    selectedCategory === category
-                                        ? "bg-black text-white"
-                                        : "bg-white"
-                                }`}
+                    <div className="flex flex-col sm:flex-row w-full lg:w-auto gap-4 items-center justify-end">
+                        
+                        {/* Dropdown Filter */}
+                        <div className="relative w-full sm:w-48 z-40">
+                            <button 
+                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                className="w-full bg-white border border-gray-200 text-gray-800 px-5 py-3.5 rounded-xl shadow-sm hover:border-gray-300 transition-all flex justify-between items-center font-medium focus:outline-none focus:ring-2 focus:ring-black"
                             >
-
-                                {category}
-
+                                <span>{selectedCategory}</span>
+                                <svg className={`w-5 h-5 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path></svg>
                             </button>
-                        )
-                    )}
+                            
+                            {isDropdownOpen && (
+                                <div className="absolute top-full left-0 mt-2 w-full bg-white border border-gray-100 rounded-xl shadow-xl overflow-hidden">
+                                    {categories.map((category) => (
+                                        <button
+                                            key={category}
+                                            onClick={() => {
+                                                setSelectedCategory(category);
+                                                setIsDropdownOpen(false);
+                                            }}
+                                            className={`w-full text-left px-5 py-3 transition-colors hover:bg-gray-50 ${selectedCategory === category ? 'bg-gray-100 font-bold text-black' : 'text-gray-600'}`}
+                                        >
+                                            {category}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
 
+                        {/* Search Bar */}
+                        <div className="relative w-full sm:w-72 lg:w-96">
+                            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            </div>
+                            <input
+                                type="text"
+                                placeholder="Search Products..."
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                                className="w-full pl-12 pr-4 py-3.5 border border-gray-200 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all bg-white"
+                            />
+                        </div>
+                    </div>
                 </div>
 
-
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-
+                {/* 3. Product Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
                     {products
                         .filter((product) => {
-
-                            const matchesSearch = product.name
-                                .toLowerCase()
-                                .includes(
-                                    search.toLowerCase()
-                                );
-
-
-
-                            const matchesCategory =
-
-                                selectedCategory === "All"
-
-                                ||
-
-                                product.category === selectedCategory;
-
-
-
+                            const matchesSearch = product.name.toLowerCase().includes(search.toLowerCase());
+                            const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
                             return matchesSearch && matchesCategory;
                         })
-
                         .map((product) => (
-
                             <div
                                 key={product.id}
-                                className="bg-white p-8 rounded-3xl shadow-lg"
+                                className="bg-white p-5 rounded-2xl shadow-sm border border-gray-100 hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 flex flex-col h-full group"
                             >
-
-                                {product.image && (
-
-                                    <img
-                                        src={`http://127.0.0.1:8000${product.image}`}
-                                        alt={product.name}
-                                        className="w-full h-56 object-cover rounded-2xl mb-5"
-                                    />
-
-                                )}
-
-                                <h2 className="text-3xl font-bold mb-4">
-
-                                    {product.name}
-
-                                </h2>
-
-
-                                <p className="text-gray-500 mb-4">
-
-                                    {product.description}
-
-                                </p>
-
-
-                                <p className="text-sm bg-gray-200 inline-block px-4 py-2 rounded-full mb-4">
-
-                                    {product.category}
-
-                                </p>
-
-
-                                <h1 className="text-4xl font-bold mb-6">
-
-                                    ₹ {product.price}
-
-                                </h1>
-
-
-
-                                <div className="flex gap-4">
-
-                                    <Link
-                                        to={`/product/${product.id}`}
-                                        className="bg-black text-white px-6 py-4 rounded-2xl inline-block"
-                                    >
-
-                                        View
-
-                                    </Link>
-
-
-
-                                    <button
-                                        onClick={() =>
-                                            addToCart(product)
-                                        }
-                                        className="bg-green-500 text-white px-6 py-4 rounded-2xl"
-                                    >
-
-                                        Add To Cart
-
-                                    </button>
-
+                                <div className="overflow-hidden rounded-xl mb-5 relative bg-gray-50 h-48">
+                                    {product.image && (
+                                        <img
+                                            src={`http://127.0.0.1:8000${product.image}`}
+                                            alt={product.name}
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500 ease-in-out"
+                                        />
+                                    )}
+                                    <span className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm text-xs font-bold px-3 py-1 rounded-full shadow-sm text-gray-800">
+                                        {product.category}
+                                    </span>
                                 </div>
 
+                                <div className="flex-grow">
+                                    <h2 className="text-xl font-bold text-gray-900 mb-2 truncate" title={product.name}>
+                                        {product.name}
+                                    </h2>
+                                    <p className="text-gray-500 text-sm mb-4 line-clamp-2">
+                                        {product.description}
+                                    </p>
+                                </div>
+
+                                <div className="mt-auto pt-4 border-t border-gray-50">
+                                    <h1 className="text-2xl font-extrabold text-black mb-5">
+                                        ₹ {product.price}
+                                    </h1>
+
+                                    <div className="flex gap-3">
+                                        <Link
+                                            to={`/product/${product.id}`}
+                                            className="flex-1 bg-gray-900 text-white text-center px-4 py-2.5 rounded-xl font-medium hover:bg-gray-800 transition-colors"
+                                        >
+                                            View
+                                        </Link>
+                                        <button
+                                            onClick={() => addToCart(product)}
+                                            className="flex-[1.5] bg-green-500 text-white text-center px-4 py-2.5 rounded-xl font-medium hover:bg-green-600 transition-colors active:scale-95"
+                                        >
+                                            Add To Cart
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         ))}
-
                 </div>
-
             </div>
-
         </div>
-    )
+    );
 }
 
 export default ShopPage;
