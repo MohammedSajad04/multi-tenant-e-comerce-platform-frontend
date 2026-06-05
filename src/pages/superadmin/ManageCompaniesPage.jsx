@@ -52,6 +52,60 @@ function ManageCompaniesPage() {
         }
     };
 
+    const rejectCompany = async (id) => {
+
+        try {
+
+            await api.put(
+                `tenants/superadmin/reject/${id}/`
+            );
+
+            fetchCompanies();
+
+            setSelectedCompany(null);
+
+        } catch (error) {
+
+            console.log(error);
+        }
+    };
+
+    const blockCompany = async (id) => {
+
+        try {
+
+            await api.put(
+                `tenants/superadmin/block/${id}/`
+            );
+
+            fetchCompanies();
+
+            setSelectedCompany(null);
+
+        } catch (error) {
+
+            console.log(error);
+        }
+    };
+
+    const unblockCompany = async (id) => {
+
+        try {
+
+            await api.put(
+                `tenants/superadmin/unblock/${id}/`
+            );
+
+            fetchCompanies();
+
+            setSelectedCompany(null);
+
+        } catch (error) {
+
+            console.log(error);
+        }
+    };
+
     return (
 
         <SuperAdminLayout>
@@ -66,7 +120,7 @@ function ManageCompaniesPage() {
 
                 <p className="text-gray-500 mt-2">
 
-                    View and manage all companies on the platform
+                    View and manage all companies registered on the platform
 
                 </p>
 
@@ -87,7 +141,7 @@ function ManageCompaniesPage() {
 
                         </h2>
 
-                        <p className="text-gray-600 mb-4">
+                        <p className="text-gray-500 mb-3">
 
                             {company.business_type}
                         </p>
@@ -96,6 +150,10 @@ function ManageCompaniesPage() {
                             className={`px-4 py-2 rounded-full text-sm ${
                                 company.status === "approved"
                                     ? "bg-green-100 text-green-700"
+                                    : company.status === "blocked"
+                                    ? "bg-red-100 text-red-700"
+                                    : company.status === "rejected"
+                                    ? "bg-red-100 text-red-700"
                                     : "bg-yellow-100 text-yellow-700"
                             }`}
                         >
@@ -129,7 +187,7 @@ function ManageCompaniesPage() {
 
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
 
-                    <div className="bg-white w-[700px] rounded-3xl p-8">
+                    <div className="bg-white w-[750px] rounded-3xl p-8">
 
                         <div className="flex justify-between items-center mb-8">
 
@@ -143,7 +201,7 @@ function ManageCompaniesPage() {
                                 onClick={() =>
                                     setSelectedCompany(null)
                                 }
-                                className="text-2xl"
+                                className="text-3xl"
                             >
 
                                 ×
@@ -156,72 +214,96 @@ function ManageCompaniesPage() {
 
                             <div>
 
-                                <p className="font-bold">
+                                <p className="font-semibold">
+
                                     Owner
+
                                 </p>
 
                                 <p>
+
                                     {selectedCompany.owner_name}
+
                                 </p>
 
                             </div>
 
                             <div>
 
-                                <p className="font-bold">
+                                <p className="font-semibold">
+
                                     Email
+
                                 </p>
 
                                 <p>
+
                                     {selectedCompany.company_email}
+
                                 </p>
 
                             </div>
 
                             <div>
 
-                                <p className="font-bold">
+                                <p className="font-semibold">
+
                                     Phone
+
                                 </p>
 
                                 <p>
+
                                     {selectedCompany.phone_number}
+
                                 </p>
 
                             </div>
 
                             <div>
 
-                                <p className="font-bold">
+                                <p className="font-semibold">
+
                                     Business Type
+
                                 </p>
 
                                 <p>
+
                                     {selectedCompany.business_type}
+
                                 </p>
 
                             </div>
 
                             <div>
 
-                                <p className="font-bold">
-                                    Registration Number
+                                <p className="font-semibold">
+
+                                    Registration
+
                                 </p>
 
                                 <p>
+
                                     {selectedCompany.registration_number}
+
                                 </p>
 
                             </div>
 
                             <div>
 
-                                <p className="font-bold">
+                                <p className="font-semibold">
+
                                     Status
+
                                 </p>
 
                                 <p>
+
                                     {selectedCompany.status}
+
                                 </p>
 
                             </div>
@@ -230,7 +312,7 @@ function ManageCompaniesPage() {
 
                         <div className="mt-6">
 
-                            <p className="font-bold mb-2">
+                            <p className="font-semibold mb-2">
 
                                 Address
 
@@ -246,7 +328,7 @@ function ManageCompaniesPage() {
 
                         <div className="mt-6">
 
-                            <p className="font-bold mb-2">
+                            <p className="font-semibold mb-2">
 
                                 Description
 
@@ -262,7 +344,7 @@ function ManageCompaniesPage() {
 
                         <div className="mt-6">
 
-                            <p className="font-bold mb-2">
+                            <p className="font-semibold mb-2">
 
                                 Modules
 
@@ -276,26 +358,72 @@ function ManageCompaniesPage() {
 
                         </div>
 
-                        {selectedCompany.status === "pending" && (
+                        <div className="flex gap-4 mt-8">
 
-                            <div className="mt-8">
+                            {selectedCompany.status === "pending" && (
+
+                                <>
+                                    <button
+                                        onClick={() =>
+                                            approveCompany(
+                                                selectedCompany.id
+                                            )
+                                        }
+                                        className="bg-green-600 text-white px-6 py-3 rounded-xl"
+                                    >
+
+                                        Approve
+
+                                    </button>
+
+                                    <button
+                                        onClick={() =>
+                                            rejectCompany(
+                                                selectedCompany.id
+                                            )
+                                        }
+                                        className="bg-red-600 text-white px-6 py-3 rounded-xl"
+                                    >
+
+                                        Reject
+
+                                    </button>
+                                </>
+                            )}
+
+                            {selectedCompany.status === "approved" && (
 
                                 <button
                                     onClick={() =>
-                                        approveCompany(
+                                        blockCompany(
+                                            selectedCompany.id
+                                        )
+                                    }
+                                    className="bg-red-600 text-white px-6 py-3 rounded-xl"
+                                >
+
+                                    Block Company
+
+                                </button>
+                            )}
+
+                            {selectedCompany.status === "blocked" && (
+
+                                <button
+                                    onClick={() =>
+                                        unblockCompany(
                                             selectedCompany.id
                                         )
                                     }
                                     className="bg-green-600 text-white px-6 py-3 rounded-xl"
                                 >
 
-                                    Approve Company
+                                    Unblock Company
 
                                 </button>
+                            )}
 
-                            </div>
-
-                        )}
+                        </div>
 
                     </div>
 
