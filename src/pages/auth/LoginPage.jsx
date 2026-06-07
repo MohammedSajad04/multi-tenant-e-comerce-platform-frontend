@@ -101,11 +101,11 @@ function LoginPage() {
 
     return (
 
-        <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-black to-gray-800 px-5">
+        <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-black via-slate-950 to-slate-800 px-5">
 
-            <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-10">
+            <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-6">
 
-                <div className="flex mb-8 bg-gray-200 rounded-xl overflow-hidden">
+                <div className="flex mb-6 bg-gray-200 rounded-lg overflow-hidden">
 
                     <button
                         onClick={() => setIsLogin(true)}
@@ -131,7 +131,7 @@ function LoginPage() {
 
                 </div>
 
-                <h1 className="text-4xl font-bold text-center mb-8">
+                <h1 className="text-3xl font-bold text-center mb-6">
 
                     {isLogin
                         ? "Welcome Back"
@@ -149,7 +149,7 @@ function LoginPage() {
                                 name="name"
                                 placeholder="Full Name"
                                 onChange={handleChange}
-                                className="w-full border border-gray-300 p-4 rounded-xl mb-4 outline-none focus:border-black"
+                                className="w-full border border-gray-300 px-4 py-3 rounded-lg mb-4 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
                             />
 
                             <input
@@ -158,6 +158,7 @@ function LoginPage() {
                                 placeholder="Email"
                                 required
                                 onChange={handleChange}
+                                className="w-full border border-gray-300 px-4 py-3 rounded-lg mb-4 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
                             />
 
                             <input
@@ -165,7 +166,7 @@ function LoginPage() {
                                 name="phone"
                                 placeholder="Phone Number"
                                 onChange={handleChange}
-                                className="w-full border border-gray-300 p-4 rounded-xl mb-4 outline-none focus:border-black"
+                                className="w-full border border-gray-300 px-4 py-3 rounded-lg mb-4 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
                             />
                         </>
                     )}
@@ -178,6 +179,7 @@ function LoginPage() {
                             placeholder="Email"
                             required
                             onChange={handleChange}
+                            className="w-full border border-gray-300 px-4 py-3 rounded-lg mb-4 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
                         />
 
                     )}
@@ -188,6 +190,7 @@ function LoginPage() {
                         placeholder="Password"
                         required
                         onChange={handleChange}
+                        className="w-full border border-gray-300 px-4 py-3 rounded-lg mb-4 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
                     />
 
                     {!isLogin && (
@@ -198,12 +201,13 @@ function LoginPage() {
                         placeholder="Password"
                         required
                         onChange={handleChange}
+                        className="w-full border border-gray-300 px-4 py-3 rounded-lg mb-4 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
                         />
 
                     )}
 
                     <button
-                        className="w-full bg-black text-white py-4 rounded-xl text-lg font-semibold hover:bg-gray-800 transition"
+                        className="w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
                     >
                         {isLogin ? "Login" : "Register"}
                     </button>
