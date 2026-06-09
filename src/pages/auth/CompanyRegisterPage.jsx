@@ -1,43 +1,69 @@
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
+import { registerCompany } from "../../services/companyService";
 
 function CompanyRegisterPage() {
-
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
-
-        company_name: "",
-        owner_name: "",
-        email: "",
-        phone: "",
-        address: "",
-        business_type: "",
-        password: "",
-        confirm_password: "",
-    });
-
+    company_name: "",
+    owner_name: "",
+    company_email: "",
+    phone_number: "",
+    address: "",
+    business_type: "",
+    password: "",
+    confirm_password: "",
+});
 
     const handleChange = (e) => {
-
         setFormData({
-
             ...formData,
             [e.target.name]: e.target.value,
         });
     };
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
 
-        e.preventDefault();
+    e.preventDefault();
 
-        console.log(formData);
+    if (
+        formData.password !==
+        formData.confirm_password
+    ) {
+        alert(
+            "Passwords do not match"
+        );
+        return;
+    }
 
-        alert("Company Registration Submitted");
-    };
+    try {
 
+        await registerCompany(formData);
+
+        alert(
+            "Company Registration Submitted Successfully"
+        );
+
+        navigate("/");
+
+    } catch (error) {
+
+        console.log(error);
+
+        console.log(
+            error.response?.data
+        );
+
+        alert(
+            JSON.stringify(
+                error.response?.data
+            )
+        );
+    }
+};
 
     return (
-
         <div className="min-h-screen bg-gradient-to-r from-black to-gray-800 flex justify-center items-center py-20 px-5">
 
             <div className="bg-white w-full max-w-3xl rounded-3xl shadow-2xl p-10">
@@ -81,7 +107,7 @@ function CompanyRegisterPage() {
 
                     <input
                         type="email"
-                        name="email"
+                        name="company_email"
                         placeholder="Company Email"
                         onChange={handleChange}
                         className="border border-gray-300 p-4 rounded-xl outline-none focus:border-black"
@@ -90,7 +116,7 @@ function CompanyRegisterPage() {
 
                     <input
                         type="text"
-                        name="phone"
+                        name="phone_number"
                         placeholder="Phone Number"
                         onChange={handleChange}
                         className="border border-gray-300 p-4 rounded-xl outline-none focus:border-black"

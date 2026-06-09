@@ -13,29 +13,33 @@ function Sidebar() {
 
     const { logout, user } = useAuth();
 
-    const menuItems = [
+   const menuItems = [
 
-        {
-            name: "Dashboard",
-            path: "/dashboard",
-        },
+    {
+        name: "Dashboard",
+        path: "/dashboard",
+    },
 
-        {
-            name: "Products",
-            path: "/products",
-        },
+    {
+        name: "Products",
+        path: "/products",
+    },
 
-        {
-            name: "Orders",
-            path: "/orders",
-        },
+    {
+        name: "Orders",
+        path: "/orders",
+    },
 
-        {
-            name: "Customers",
-            path: "/customers",
-        },
-    ];
+    {
+        name: "Customers",
+        path: "/customers",
+    },
 
+    {
+        name: "Subscription",
+        path: "/subscription",
+    },
+];
     return (
 
         <div className="w-[260px] bg-black text-white min-h-screen p-6 flex flex-col justify-between">

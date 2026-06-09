@@ -47,6 +47,8 @@ import CustomersDashboard from "./pages/dashboard/CustomersDashboard";
 
 import OrdersDashboard from "./pages/dashboard/OrdersDashboard";
 
+import SubscriptionPage from "./pages/dashboard/SubscriptionPage";
+
 function App() {
 
   return (
@@ -170,6 +172,14 @@ function App() {
           element={
               <AdminRoute>
                   <OrdersDashboard />
+              </AdminRoute>
+          }
+      />
+      <Route
+          path="/subscription"
+          element={
+              <AdminRoute>
+                  <SubscriptionPage />
               </AdminRoute>
           }
       />
