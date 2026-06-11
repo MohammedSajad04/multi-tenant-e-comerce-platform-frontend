@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import DashboardLayout from "../../layouts/DashboardLayout";
 import api from "../../services/api";
 
 function SubscriptionPage() {
 
     const [subscription, setSubscription] = useState(null);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -16,11 +19,13 @@ function SubscriptionPage() {
 
         try {
 
-            const response = await api.get(
+           const response = await api.get(
                 "tenants/subscription/"
             );
 
-            setSubscription(response.data);
+            setSubscription(
+                response.data.subscription
+            );
 
         } catch (error) {
 
@@ -31,10 +36,15 @@ function SubscriptionPage() {
     if (!subscription) {
 
         return (
+
             <DashboardLayout>
+
                 <div className="p-10">
+
                     Loading...
+
                 </div>
+
             </DashboardLayout>
         );
     }
@@ -45,117 +55,183 @@ function SubscriptionPage() {
 
             <div className="p-10">
 
-                <h1 className="text-5xl font-bold mb-10">
+                <div className="flex justify-between items-center mb-10">
 
-                    Subscription
+                    <h1 className="text-5xl font-bold">
 
-                </h1>
+                        Subscription
 
-                <div className="bg-white p-8 rounded-3xl shadow-lg mb-10">
+                    </h1>
 
-                    <h2 className="text-3xl font-bold mb-4">
+                    <button
+                        onClick={() => navigate("/plans")}
+                        className="
+                            bg-black
+                            text-white
+                            px-6
+                            py-4
+                            rounded-xl
+                            hover:bg-gray-800
+                            transition
+                        "
+                    >
 
-                        Current Plan
+                        Upgrade Plan
 
-                    </h2>
-
-                    <p className="text-xl mb-3">
-
-                        Plan:
-                        <span className="font-bold ml-2">
-                            {subscription.subscription_plan}
-                        </span>
-
-                    </p>
-
-                    <p className="text-xl mb-3">
-
-                        Start:
-                        <span className="font-bold ml-2">
-                            {subscription.subscription_start}
-                        </span>
-
-                    </p>
-
-                    <p className="text-xl">
-
-                        End:
-                        <span className="font-bold ml-2">
-                            {subscription.subscription_end}
-                        </span>
-
-                    </p>
+                    </button>
 
                 </div>
 
-                <h2 className="text-3xl font-bold mb-6">
+                <div className="bg-white rounded-3xl shadow-lg p-8 mb-10">
 
-                    Upgrade Plan
+                    <h2 className="text-3xl font-bold mb-8">
 
-                </h2>
+                        Current Subscription
 
-                <div className="grid md:grid-cols-3 gap-6">
+                    </h2>
 
-                    <div className="bg-white p-8 rounded-3xl shadow-lg">
+                    <div className="grid md:grid-cols-2 gap-8">
 
-                        <h2 className="text-2xl font-bold mb-4">
+                        <div>
 
-                            Monthly
+                            <p className="text-gray-500 mb-2">
 
-                        </h2>
+                                Plan
 
-                        <h1 className="text-4xl font-bold mb-6">
+                            </p>
 
-                            ₹499
-                        </h1>
+                            <h2 className="text-2xl font-bold capitalize">
 
-                        <button
-                            className="bg-black text-white px-6 py-3 rounded-xl"
-                        >
-                            Buy Now
-                        </button>
+                                {
+                                    subscription.subscription_plan ||
+                                    "No Active Plan"
+                                }
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <p className="text-gray-500 mb-2">
+
+                                Days Remaining
+
+                            </p>
+
+                            <h2 className="text-2xl font-bold text-green-600">
+
+                                {
+                                    subscription.days_remaining
+                                }
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <p className="text-gray-500 mb-2">
+
+                                Start Date
+
+                            </p>
+
+                            <h2 className="font-bold text-lg">
+
+                                {
+                                    subscription.subscription_start ||
+                                    "-"
+                                }
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <p className="text-gray-500 mb-2">
+
+                                Expiry Date
+
+                            </p>
+
+                            <h2 className="font-bold text-lg">
+
+                                {
+                                    subscription.subscription_end ||
+                                    "-"
+                                }
+
+                            </h2>
+
+                        </div>
+
+                        <div>
+
+                            <p className="text-gray-500 mb-2">
+
+                                Auto Renew
+
+                            </p>
+
+                            <h2
+                                className={`font-bold text-lg ${
+                                    subscription.auto_renew
+                                        ? "text-green-600"
+                                        : "text-red-500"
+                                }`}
+                            >
+
+                                {
+                                    subscription.auto_renew
+                                        ? "Enabled"
+                                        : "Disabled"
+                                }
+
+                            </h2>
+
+                        </div>
 
                     </div>
 
-                    <div className="bg-white p-8 rounded-3xl shadow-lg">
+                </div>
 
-                        <h2 className="text-2xl font-bold mb-4">
+                <div className="bg-white rounded-3xl shadow-lg p-8">
 
-                            6 Months
+                    <h2 className="text-3xl font-bold mb-8">
 
-                        </h2>
+                        Subscription History
 
-                        <h1 className="text-4xl font-bold mb-6">
+                    </h2>
 
-                            ₹2499
-                        </h1>
+                    <div className="border rounded-2xl p-5">
 
-                        <button
-                            className="bg-black text-white px-6 py-3 rounded-xl"
-                        >
-                            Buy Now
-                        </button>
+                        <div className="flex justify-between">
 
-                    </div>
+                            <span className="font-semibold">
 
-                    <div className="bg-white p-8 rounded-3xl shadow-lg">
+                                Current Plan
 
-                        <h2 className="text-2xl font-bold mb-4">
+                            </span>
 
-                            Yearly
+                            <span className="font-bold capitalize">
 
-                        </h2>
+                                {
+                                    subscription.subscription_plan ||
+                                    "None"
+                                }
 
-                        <h1 className="text-4xl font-bold mb-6">
+                            </span>
 
-                            ₹4999
-                        </h1>
+                        </div>
 
-                        <button
-                            className="bg-black text-white px-6 py-3 rounded-xl"
-                        >
-                            Buy Now
-                        </button>
+                        <div className="mt-4 text-gray-500">
+
+                            Payment history will appear here
+                            after successful subscriptions.
+
+                        </div>
 
                     </div>
 

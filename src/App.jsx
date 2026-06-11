@@ -49,6 +49,8 @@ import OrdersDashboard from "./pages/dashboard/OrdersDashboard";
 
 import SubscriptionPage from "./pages/dashboard/SubscriptionPage";
 
+import PlanSelectionPage from "./pages/dashboard/PlanSelectionPage";
+
 function App() {
 
   return (
@@ -180,6 +182,14 @@ function App() {
           element={
               <AdminRoute>
                   <SubscriptionPage />
+              </AdminRoute>
+          }
+      />
+      <Route
+          path="/plans"
+          element={
+              <AdminRoute>
+                  <PlanSelectionPage />
               </AdminRoute>
           }
       />

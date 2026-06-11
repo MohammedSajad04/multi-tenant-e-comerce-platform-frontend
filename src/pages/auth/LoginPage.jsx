@@ -1,17 +1,16 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-
 import {
     loginUser,
     getCurrentUser
 } from "../../services/authService";
-
 import {
     isSuperAdmin,
     isCompanyAdmin,
     isCustomer
 } from "../../utils/authRoles";
+import api from "../../services/api";
 
 function LoginPage() {
 
@@ -22,7 +21,6 @@ function LoginPage() {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-
         name: "",
         email: "",
         phone: "",
@@ -33,9 +31,7 @@ function LoginPage() {
     const handleChange = (e) => {
 
         setFormData({
-
             ...formData,
-
             [e.target.name]: e.target.value,
         });
     };
@@ -44,58 +40,85 @@ function LoginPage() {
 
         e.preventDefault();
 
-        if (isLogin) {
+        try {
 
-            try {
+            const response = await loginUser({
+                email: formData.email,
+                password: formData.password,
+            });
 
-                const response = await loginUser({
+            localStorage.setItem(
+                "access",
+                response.access
+            );
 
-                    email: formData.email,
+            localStorage.setItem(
+                "refresh",
+                response.refresh
+            );
 
-                    password: formData.password,
-                });
+            const user =
+                await getCurrentUser();
 
-                localStorage.setItem(
-                    "access",
-                    response.access
+            setUser(user);
+
+            if (isSuperAdmin(user)) {
+
+                navigate(
+                    "/super-admin"
                 );
 
-                localStorage.setItem(
-                    "refresh",
-                    response.refresh
-                );
+            } else if (
+                isCompanyAdmin(user)
+            ) {
 
-                const user = await getCurrentUser();
+                try {
 
-                setUser(user);
+                    const sub =
+                        await api.get(
+                            "tenants/subscription/"
+                        );
 
-                alert("Login Success");
+                    if (
+                        sub.data.has_active_plan
+                    ) {
 
-                if (isSuperAdmin(user)) {
+                        navigate(
+                            "/dashboard"
+                        );
 
-                    navigate("/super-admin", {
-                        replace: true
-                    });
+                    } else {
 
-                } else if (isCompanyAdmin(user)) {
+                        navigate(
+                            "/plans"
+                        );
+                    }
 
-                    navigate("/dashboard");
+                } catch {
 
-                } else if (isCustomer(user)) {
-
-                    navigate("/shop");
-
-                } else {
-
-                    navigate("/");
+                    navigate(
+                        "/plans"
+                    );
                 }
 
-            } catch (error) {
+            } else if (
+                isCustomer(user)
+            ) {
 
-                console.log(error);
+                navigate("/shop");
 
-                alert("Invalid Credentials");
+            } else {
+
+                navigate("/");
             }
+
+        } catch (error) {
+
+            console.log(error);
+
+            alert(
+                "Invalid Credentials"
+            );
         }
     };
 
@@ -108,22 +131,26 @@ function LoginPage() {
                 <div className="flex mb-6 bg-gray-200 rounded-lg overflow-hidden">
 
                     <button
-                        onClick={() => setIsLogin(true)}
-                        className={`w-1/2 py-3 font-semibold transition ${
+                        onClick={() =>
+                            setIsLogin(true)
+                        }
+                        className={`w-1/2 py-3 font-semibold ${
                             isLogin
                                 ? "bg-black text-white"
-                                : "bg-transparent text-black"
+                                : ""
                         }`}
                     >
                         Login
                     </button>
 
                     <button
-                        onClick={() => setIsLogin(false)}
-                        className={`w-1/2 py-3 font-semibold transition ${
+                        onClick={() =>
+                            setIsLogin(false)
+                        }
+                        className={`w-1/2 py-3 font-semibold ${
                             !isLogin
                                 ? "bg-black text-white"
-                                : "bg-transparent text-black"
+                                : ""
                         }`}
                     >
                         Register
@@ -133,83 +160,36 @@ function LoginPage() {
 
                 <h1 className="text-3xl font-bold text-center mb-6">
 
-                    {isLogin
-                        ? "Welcome Back"
-                        : "Create Account"}
+                    Login
 
                 </h1>
 
-                <form onSubmit={handleSubmit}>
-
-                    {!isLogin && (
-
-                        <>
-                            <input
-                                type="text"
-                                name="name"
-                                placeholder="Full Name"
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 px-4 py-3 rounded-lg mb-4 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
-                            />
-
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email"
-                                required
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 px-4 py-3 rounded-lg mb-4 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
-                            />
-
-                            <input
-                                type="text"
-                                name="phone"
-                                placeholder="Phone Number"
-                                onChange={handleChange}
-                                className="w-full border border-gray-300 px-4 py-3 rounded-lg mb-4 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
-                            />
-                        </>
-                    )}
-
-                    {isLogin && (
-
-                        <input
-                            type="email"
-                            name="email"
-                            placeholder="Email"
-                            required
-                            onChange={handleChange}
-                            className="w-full border border-gray-300 px-4 py-3 rounded-lg mb-4 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
-                        />
-
-                    )}
+                <form
+                    onSubmit={handleSubmit}
+                >
 
                     <input
-                        type="password"
-                        name="password"
-                        placeholder="Password"
+                        type="email"
+                        name="email"
+                        placeholder="Email"
                         required
                         onChange={handleChange}
-                        className="w-full border border-gray-300 px-4 py-3 rounded-lg mb-4 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
+                        className="w-full border px-4 py-3 rounded-lg mb-4"
                     />
 
-                    {!isLogin && (
-
                     <input
                         type="password"
                         name="password"
                         placeholder="Password"
                         required
                         onChange={handleChange}
-                        className="w-full border border-gray-300 px-4 py-3 rounded-lg mb-4 outline-none transition focus:border-black focus:ring-2 focus:ring-black/10"
-                        />
-
-                    )}
+                        className="w-full border px-4 py-3 rounded-lg mb-4"
+                    />
 
                     <button
-                        className="w-full bg-black text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition"
+                        className="w-full bg-black text-white py-3 rounded-lg"
                     >
-                        {isLogin ? "Login" : "Register"}
+                        Login
                     </button>
 
                 </form>

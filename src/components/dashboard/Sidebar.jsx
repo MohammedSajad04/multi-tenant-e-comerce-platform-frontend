@@ -1,6 +1,7 @@
 import {
     Link,
-    useLocation
+    useLocation,
+    useNavigate
 } from "react-router-dom";
 
 import {
@@ -11,35 +12,53 @@ function Sidebar() {
 
     const location = useLocation();
 
+    const navigate = useNavigate();
+
     const { logout, user } = useAuth();
 
-   const menuItems = [
+    const openStore = () => {
 
-    {
-        name: "Dashboard",
-        path: "/dashboard",
-    },
+        localStorage.setItem(
+            "tenant_id",
+            user?.tenant
+        );
 
-    {
-        name: "Products",
-        path: "/products",
-    },
+        localStorage.setItem(
+            "company_name",
+            user?.tenant_name
+        );
 
-    {
-        name: "Orders",
-        path: "/orders",
-    },
+        navigate("/shop");
+    };
 
-    {
-        name: "Customers",
-        path: "/customers",
-    },
+    const menuItems = [
 
-    {
-        name: "Subscription",
-        path: "/subscription",
-    },
-];
+        {
+            name: "Dashboard",
+            path: "/dashboard",
+        },
+
+        {
+            name: "Products",
+            path: "/products",
+        },
+
+        {
+            name: "Orders",
+            path: "/orders",
+        },
+
+        {
+            name: "Customers",
+            path: "/customers",
+        },
+
+        {
+            name: "Subscription",
+            path: "/subscription",
+        },
+    ];
+
     return (
 
         <div className="w-[260px] bg-black text-white min-h-screen p-6 flex flex-col justify-between">
@@ -71,6 +90,21 @@ function Sidebar() {
                         </Link>
 
                     ))}
+
+                    <button
+                        onClick={openStore}
+                        className="
+                            px-5
+                            py-4
+                            rounded-xl
+                            bg-gray-900
+                            hover:bg-gray-800
+                            text-left
+                            transition
+                        "
+                    >
+                        Open Store
+                    </button>
 
                     {user?.role === "super_admin" && (
 

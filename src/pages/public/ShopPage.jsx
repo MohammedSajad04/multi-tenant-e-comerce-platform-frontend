@@ -20,7 +20,8 @@ function ShopPage() {
 
     const fetchProducts = async () => {
         try {
-            const response = await api.get("products/list/?tenant=1");
+            const tenantId =localStorage.getItem("tenant_id");
+            const response = await api.get(`products/list/?tenant=${tenantId}`);
             setProducts(response.data);
             if (response.data.length > 0) {
 

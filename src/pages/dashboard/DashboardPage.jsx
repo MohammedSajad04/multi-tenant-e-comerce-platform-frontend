@@ -1,112 +1,62 @@
-import {
-
-    useEffect,
-    useState
-
-} from "react";
-
-
+import { useEffect, useState} from "react";
 import DashboardLayout from "../../layouts/DashboardLayout";
-
 import { useAuth } from "../../context/AuthContext";
-
-import {
-
-    getDashboardData
-
-} from "../../services/dashboardService";
-
-
+import { getDashboardData} from "../../services/dashboardService";
 import DashboardNavbar from "../../components/dashboard/DashboardNavbar";
-
 import DashboardStats from "../../components/dashboard/DashboardStats";
 
-
-
 function DashboardPage() {
-
     const { user } = useAuth();
-
-
-
     const [dashboardData, setDashboardData] = useState({
-
         total_products: 0,
-
         total_orders: 0,
-
         total_revenue: 0,
-
         recent_orders: [],
     });
 
-
-
-
     useEffect(() => {
-
         fetchDashboard();
-
     }, []);
 
-
-
-
     const fetchDashboard = async () => {
-
         try {
-
             const data = await getDashboardData();
-
             setDashboardData(data);
-
         } catch (error) {
-
             console.log(error);
         }
     };
 
-
-
     return (
-
         <DashboardLayout>
-
             <div>
-
-
+               <>
                 <DashboardNavbar user={user} />
 
+                <div className="bg-yellow-100 border border-yellow-400 p-4 rounded-xl mb-6">
 
+                    <h2 className="font-bold">
+                        Subscription Status
+                    </h2>
+
+                    <p>
+                        Check your active plan from Subscription page.
+                    </p>
+
+                </div>
+            </>
                 <DashboardStats dashboardData={dashboardData} />
-
-
-
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-
                     <div className="bg-white rounded-3xl shadow-lg p-8">
-
                         <h2 className="text-3xl font-bold mb-6">
-
                             Recent Orders
-
                         </h2>
-
-
-
                         {dashboardData.recent_orders.length === 0 ? (
-
                             <p className="text-gray-500">
-
                                 No Orders Yet
-
                             </p>
-
                         ) : (
-
                             dashboardData.recent_orders.map(
-
                                 (order, index) => (
 
                                     <div
