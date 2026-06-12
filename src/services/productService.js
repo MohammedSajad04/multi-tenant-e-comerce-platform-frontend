@@ -107,3 +107,30 @@ export const updateOrderStatus = async (
 
     return response.data;
 };
+
+
+export const createOrderPayment = async (
+    orderId
+) => {
+
+    const response = await api.post(
+        "products/create-payment/",
+        {
+            order_id: orderId
+        }
+    );
+
+    return response.data;
+};
+
+export const verifyOrderPayment = async (
+    data
+) => {
+
+    const response = await api.post(
+        "products/verify-payment/",
+        data
+    );
+
+    return response.data;
+};

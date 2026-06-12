@@ -1,7 +1,10 @@
 import {useState} from "react";
 import {useCart} from "../../context/CartContext";
-import {createOrder} from "../../services/productService";
-import {useNavigate} from "react-router-dom";
+import {
+    createOrder,
+    createOrderPayment,
+    verifyOrderPayment
+} from "../../services/productService";import {useNavigate} from "react-router-dom";
 import Navbar from "../../components/public/Navbar";
 
 
@@ -55,41 +58,81 @@ function CheckoutPage() {
 
 
 
-    const handlePlaceOrder = async () => {
+        const handlePlaceOrder = async () => {
 
-        if (!formData.address || !formData.phone) {
+            try {
 
-            alert("Please fill all fields");
+                const firstItem = cartItems[0];
 
-            return;
-        }
+                const order = await createOrder(
+                    firstItem.id,
+                    firstItem.quantity
+                );
 
-        try {
+                const payment =
+                    await createOrderPayment(
+                        order.id
+                    );
 
-            for (const item of cartItems) {
+                const options = {
 
-                await createOrder(
+                    key: payment.key,
 
-                    item.id,
-                    item.quantity
+                    amount: payment.amount,
+
+                    currency: "INR",
+
+                    order_id: payment.order_id,
+
+                    name: "SAJAD SHOP",
+
+                    handler: async function (
+                        response
+                    ) {
+
+                        await verifyOrderPayment({
+
+                            db_order_id:
+                                payment.db_order_id,
+
+                            razorpay_payment_id:
+                                response.razorpay_payment_id,
+
+                            razorpay_order_id:
+                                response.razorpay_order_id,
+
+                            razorpay_signature:
+                                response.razorpay_signature,
+                        });
+
+                        clearCart();
+
+                        alert(
+                            "Payment Successful"
+                        );
+
+                        navigate(
+                            "/my-orders"
+                        );
+                    }
+                };
+
+                const razorpay =
+                    new window.Razorpay(
+                        options
+                    );
+
+                razorpay.open();
+
+            } catch (error) {
+
+                console.log(error);
+
+                alert(
+                    error.response?.data?.error ||
+                    "Payment Failed"
                 );
             }
-
-
-            clearCart();
-
-
-            alert("Order Placed Successfully 🔥");
-
-
-            navigate("/order-success");
-
-        } catch (error) {
-
-            console.log(error);
-
-            alert("Order Failed");
-        }
     };
     
     if (cartItems.length === 0) {

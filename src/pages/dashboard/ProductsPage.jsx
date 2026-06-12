@@ -129,6 +129,10 @@ function ProductsPage() {
         Object.keys(initialFormData).forEach((key) => {
             const value = formData[key];
 
+            if (key === "business_type") {
+                return;
+            }
+
             if (key === "image" && !value) {
                 return;
             }
@@ -321,26 +325,41 @@ function ProductsPage() {
                                             required
                                         />
 
-                                        <select
-                                            name="category"
-                                            value={formData.category}
-                                            onChange={handleChange}
-                                            className="border border-gray-200 p-5 rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
-                                            required
-                                        >
-                                            <option value="">
-                                                Select Category
-                                            </option>
+                                        <div className="relative">
+                                            <input
+                                                type="text"
+                                                name="category"
+                                                list="product-categories"
+                                                placeholder="Select or type category"
+                                                value={formData.category}
+                                                onChange={handleChange}
+                                                onClick={(e) => e.currentTarget.showPicker?.()}
+                                                className="w-full border border-gray-200 p-5 pr-12 rounded-xl focus:outline-none focus:ring-2 focus:ring-black"
+                                                required
+                                            />
 
+                                            <svg
+                                                viewBox="0 0 20 20"
+                                                fill="currentColor"
+                                                className="pointer-events-none absolute right-5 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500"
+                                                aria-hidden="true"
+                                            >
+                                                <path
+                                                    fillRule="evenodd"
+                                                    d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.168l3.71-3.938a.75.75 0 1 1 1.08 1.04l-4.25 4.5a.75.75 0 0 1-1.08 0l-4.25-4.5a.75.75 0 0 1 .02-1.06Z"
+                                                    clipRule="evenodd"
+                                                />
+                                            </svg>
+                                        </div>
+
+                                        <datalist id="product-categories">
                                             {currentCategories.map((category) => (
                                                 <option
                                                     key={category}
                                                     value={category}
-                                                >
-                                                    {category}
-                                                </option>
+                                                />
                                             ))}
-                                        </select>
+                                        </datalist>
 
                                         <input
                                             type="number"

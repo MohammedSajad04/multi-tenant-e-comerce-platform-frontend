@@ -1,5 +1,6 @@
 import {Routes, Route} from "react-router-dom";
 
+import RegisterPage from "./pages/auth/RegisterPage";
 
 import HomePage from "./pages/public/HomePage";
 
@@ -51,6 +52,8 @@ import SubscriptionPage from "./pages/dashboard/SubscriptionPage";
 
 import PlanSelectionPage from "./pages/dashboard/PlanSelectionPage";
 
+
+
 function App() {
 
   return (
@@ -63,8 +66,10 @@ function App() {
         path="/"
         element={<HomePage />}
       />
-
-
+      <Route
+          path="/register"
+          element={<RegisterPage />}
+      />
       <Route
         path="/login"
         element={<LoginPage />}

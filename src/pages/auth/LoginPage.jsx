@@ -14,18 +14,13 @@ import api from "../../services/api";
 
 function LoginPage() {
 
-    const [isLogin, setIsLogin] = useState(true);
-
     const { setUser } = useAuth();
 
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
-        name: "",
         email: "",
-        phone: "",
         password: "",
-        confirmPassword: "",
     });
 
     const handleChange = (e) => {
@@ -64,9 +59,7 @@ function LoginPage() {
 
             if (isSuperAdmin(user)) {
 
-                navigate(
-                    "/super-admin"
-                );
+                navigate("/super-admin");
 
             } else if (
                 isCompanyAdmin(user)
@@ -83,22 +76,16 @@ function LoginPage() {
                         sub.data.has_active_plan
                     ) {
 
-                        navigate(
-                            "/dashboard"
-                        );
+                        navigate("/dashboard");
 
                     } else {
 
-                        navigate(
-                            "/plans"
-                        );
+                        navigate("/plans");
                     }
 
                 } catch {
 
-                    navigate(
-                        "/plans"
-                    );
+                    navigate("/plans");
                 }
 
             } else if (
@@ -124,57 +111,25 @@ function LoginPage() {
 
     return (
 
-        <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-black via-slate-950 to-slate-800 px-5">
+        <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-black via-slate-950 to-slate-900 px-5">
 
-            <div className="bg-white w-full max-w-sm rounded-2xl shadow-2xl p-6">
+            <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
 
-                <div className="flex mb-6 bg-gray-200 rounded-lg overflow-hidden">
+                <h1 className="text-4xl font-bold text-center mb-8">
 
-                    <button
-                        onClick={() =>
-                            setIsLogin(true)
-                        }
-                        className={`w-1/2 py-3 font-semibold ${
-                            isLogin
-                                ? "bg-black text-white"
-                                : ""
-                        }`}
-                    >
-                        Login
-                    </button>
-
-                    <button
-                        onClick={() =>
-                            setIsLogin(false)
-                        }
-                        className={`w-1/2 py-3 font-semibold ${
-                            !isLogin
-                                ? "bg-black text-white"
-                                : ""
-                        }`}
-                    >
-                        Register
-                    </button>
-
-                </div>
-
-                <h1 className="text-3xl font-bold text-center mb-6">
-
-                    Login
+                    Welcome Back
 
                 </h1>
 
-                <form
-                    onSubmit={handleSubmit}
-                >
+                <form onSubmit={handleSubmit}>
 
                     <input
                         type="email"
                         name="email"
-                        placeholder="Email"
+                        placeholder="Email Address"
                         required
                         onChange={handleChange}
-                        className="w-full border px-4 py-3 rounded-lg mb-4"
+                        className="w-full border border-gray-300 px-5 py-4 rounded-xl mb-5 focus:outline-none focus:ring-2 focus:ring-black"
                     />
 
                     <input
@@ -183,16 +138,34 @@ function LoginPage() {
                         placeholder="Password"
                         required
                         onChange={handleChange}
-                        className="w-full border px-4 py-3 rounded-lg mb-4"
+                        className="w-full border border-gray-300 px-5 py-4 rounded-xl mb-6 focus:outline-none focus:ring-2 focus:ring-black"
                     />
 
                     <button
-                        className="w-full bg-black text-white py-3 rounded-lg"
+                        type="submit"
+                        className="w-full bg-black text-white py-4 rounded-xl font-semibold hover:bg-gray-800 transition"
                     >
                         Login
                     </button>
 
                 </form>
+
+                <div className="mt-6 text-center">
+
+                    <p className="text-gray-500 mb-4">
+                        Don't have an account?
+                    </p>
+
+                    <button
+                        onClick={() =>
+                            navigate("/register")
+                        }
+                        className="w-full border-2 border-black py-4 rounded-xl font-semibold hover:bg-black hover:text-white transition"
+                    >
+                        Register
+                    </button>
+
+                </div>
 
             </div>
 
