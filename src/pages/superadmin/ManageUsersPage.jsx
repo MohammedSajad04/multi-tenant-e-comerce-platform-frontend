@@ -1,80 +1,44 @@
 import {
-
     useEffect,
     useState
-
 } from "react";
 
+import {
+    useNavigate
+} from "react-router-dom";
 
 import SuperAdminLayout from "../../layouts/SuperAdminLayout";
-
 import api from "../../services/api";
-
-
 
 function ManageUsersPage() {
 
-    const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
 
-
-
+    const [companies, setCompanies] = useState([]);
 
     useEffect(() => {
 
-        fetchUsers();
+        fetchCompanies();
 
     }, []);
 
-
-
-
-    const fetchUsers = async () => {
+    const fetchCompanies = async () => {
 
         try {
 
             const response = await api.get(
-
-                "accounts/superadmin/users/"
+                "accounts/superadmin/company-summary/"
             );
 
-
-
-            setUsers(response.data);
+            setCompanies(
+                response.data
+            );
 
         } catch (error) {
 
             console.log(error);
         }
     };
-
-
-
-
-    const changeRole = async (id, role) => {
-
-        try {
-
-            await api.put(
-
-                `accounts/superadmin/change-role/${id}/`,
-
-                {
-
-                    role
-                }
-            );
-
-
-
-            fetchUsers();
-
-        } catch (error) {
-
-            console.log(error);
-        }
-    };
-
-
 
     return (
 
@@ -82,132 +46,90 @@ function ManageUsersPage() {
 
             <h1 className="text-5xl font-bold mb-10">
 
-                Manage Users 👨‍💻
+                Company Directory 🏢
 
             </h1>
 
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
 
+                {companies.map((company) => (
 
-            <div className="bg-white rounded-3xl shadow-lg p-8 overflow-x-auto">
+                    <div
+                        key={company.id}
+                        className="
+                            bg-white
+                            rounded-3xl
+                            shadow-lg
+                            p-8
+                        "
+                    >
 
-                <table className="w-full">
+                        <h2 className="text-3xl font-bold mb-4">
 
-                    <thead>
+                            {company.company_name}
 
-                        <tr className="border-b text-left">
+                        </h2>
 
-                            <th className="py-4">
+                        <p className="mb-2">
 
-                                Username
+                            <strong>
+                                Admin:
+                            </strong>
 
-                            </th>
+                            {" "}
+                            {company.admin}
 
+                        </p>
 
-                            <th>
+                        <p className="mb-2">
 
-                                Email
+                            <strong>
+                                Users:
+                            </strong>
 
-                            </th>
+                            {" "}
+                            {company.total_users}
 
+                        </p>
 
-                            <th>
+                        <p className="mb-6">
 
-                                Role
+                            <strong>
+                                Status:
+                            </strong>
 
-                            </th>
+                            {" "}
+                            {company.status}
 
+                        </p>
 
-                            <th>
+                        <button
+                            onClick={() =>
+                                navigate(
+                                    `/company-users/${company.id}`
+                                )
+                            }
+                            className="
+                                bg-black
+                                text-white
+                                px-6
+                                py-3
+                                rounded-xl
+                            "
+                        >
 
-                                Actions
+                            View Users
 
-                            </th>
+                        </button>
 
-                        </tr>
+                    </div>
 
-                    </thead>
-
-
-
-                    <tbody>
-
-                        {users.map((user) => (
-
-                            <tr
-                                key={user.id}
-                                className="border-b"
-                            >
-
-                                <td className="py-4">
-
-                                    {user.username}
-
-                                </td>
-
-
-                                <td>
-
-                                    {user.email}
-
-                                </td>
-
-
-                                <td>
-
-                                    {user.role}
-
-                                </td>
-
-
-                                <td>
-
-                                    <div className="flex gap-3">
-
-                                        <button
-                                            onClick={() =>
-                                                changeRole(
-                                                    user.id,
-                                                    "customer"
-                                                )
-                                            }
-                                            className="bg-blue-500 text-white px-4 py-2 rounded-xl"
-                                        >
-
-                                            Customer
-
-                                        </button>
-
-
-
-                                        <button
-                                            onClick={() =>
-                                                changeRole(
-                                                    user.id,
-                                                    "company_admin"
-                                                )
-                                            }
-                                            className="bg-black text-white px-4 py-2 rounded-xl"
-                                        >
-
-                                            Admin
-
-                                        </button>
-
-                                    </div>
-
-                                </td>
-
-                            </tr>
-                        ))}
-
-                    </tbody>
-
-                </table>
+                ))}
 
             </div>
 
         </SuperAdminLayout>
-    )
+    );
 }
 
 export default ManageUsersPage;

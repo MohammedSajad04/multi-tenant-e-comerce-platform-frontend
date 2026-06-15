@@ -52,6 +52,13 @@ import SubscriptionPage from "./pages/dashboard/SubscriptionPage";
 
 import PlanSelectionPage from "./pages/dashboard/PlanSelectionPage";
 
+import AnalyticsPage from "./pages/superadmin/AnalyticsPage";
+
+import ManageOrdersPage from "./pages/superadmin/ManageOrdersPage";
+
+import CompanyUsersPage from "./pages/superadmin/CompanyUsersPage";
+
+import SubscriptionHistoryPage from "./pages/superadmin/SubscriptionHistoryPage";
 
 
 function App() {
@@ -264,6 +271,38 @@ function App() {
               </SuperAdminRoute>
           }
       />
+      <Route
+        path="/analytics"
+        element={
+            <SuperAdminRoute>
+                <AnalyticsPage />
+            </SuperAdminRoute>
+        }
+    />
+    <Route
+      path="/platform-orders"
+      element={
+          <SuperAdminRoute>
+              <ManageOrdersPage />
+          </SuperAdminRoute>
+      }
+  />
+  <Route
+      path="/company-users/:companyId"
+      element={
+          <SuperAdminRoute>
+              <CompanyUsersPage />
+          </SuperAdminRoute>
+      }
+  />
+  <Route
+      path="/subscription-history/:companyId"
+      element={
+          <SuperAdminRoute>
+              <SubscriptionHistoryPage />
+          </SuperAdminRoute>
+      }
+  />
 
     </Routes>
   )

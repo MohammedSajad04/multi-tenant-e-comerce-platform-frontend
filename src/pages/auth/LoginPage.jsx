@@ -109,6 +109,7 @@ function LoginPage() {
         }
     };
 
+    
     return (
 
         <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-black via-slate-950 to-slate-900 px-5">
