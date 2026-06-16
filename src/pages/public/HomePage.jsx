@@ -102,102 +102,90 @@
 
 // export default HomePage;
 
-
 import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-200 font-sans text-gray-900 overflow-x-hidden">
+    <div className="relative min-h-screen bg-black font-sans text-white overflow-hidden">
       
+      {/* Background Animated Subtle Grid/Glow */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-20 animate-pulse"></div>
+
       {/* NAVBAR */}
-      <nav className="fixed w-full z-50 flex justify-between items-center px-6 md:px-12 py-5 bg-white/70 backdrop-blur-md border-b border-gray-200 shadow-sm">
-        <h1 className="text-3xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-black to-gray-600 hover:scale-105 transition-transform duration-300 cursor-pointer">
+      <nav className="fixed w-full z-50 flex justify-between items-center px-6 md:px-12 py-5 bg-black/50 backdrop-blur-xl border-b border-white/10">
+        <h1 className="text-3xl font-extrabold tracking-widest text-white hover:text-gray-300 transition-colors duration-300 cursor-pointer drop-shadow-[0_0_15px_rgba(255,255,255,0.5)]">
           SAJAD
         </h1>
 
         <button
           onClick={() => navigate("/login")}
-          className="bg-black text-white px-6 py-2.5 rounded-full font-semibold shadow-md hover:bg-gray-800 hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
+          className="relative group bg-white text-black px-8 py-2.5 rounded-full font-bold shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.6)] transform hover:-translate-y-1 transition-all duration-300 overflow-hidden"
         >
-          Login
+          <span className="relative z-10">Login</span>
+          <div className="absolute inset-0 bg-gray-200 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
         </button>
       </nav>
 
       {/* BODY SECTION */}
-      <main className="pt-32 pb-24 px-6 md:px-12 max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <main className="relative z-10 pt-32 pb-24 px-6 md:px-12 max-w-7xl mx-auto h-full flex flex-col justify-center">
+        <div className="grid md:grid-cols-2 gap-16 items-center mt-10">
           
           {/* LEFT SIDE */}
-          <div className="space-y-8 animate-fade-in-up">
-            <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 border border-blue-100 text-blue-600 font-medium text-sm shadow-sm">
-              🚀 Elevate your business today
+          <div className="space-y-8">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 border border-zinc-700 text-gray-300 font-medium text-xs tracking-widest uppercase shadow-[0_0_10px_rgba(255,255,255,0.05)]">
+              <span className="w-2 h-2 rounded-full bg-white animate-ping"></span>
+              Next-Gen SaaS
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">
-              Build Your Business <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-                Through Our SaaS Platform
-              </span>
+            <h1 className="text-5xl md:text-7xl font-extrabold leading-tight tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500">
+              Build Your <br /> Business Through <br /> Our Platform
             </h1>
 
-            <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
-              <p>
+            <div className="space-y-6 text-lg text-gray-400 leading-relaxed border-l-2 border-zinc-800 pl-6">
+              <p className="hover:text-gray-200 transition-colors duration-300">
                 Our platform helps businesses create and manage their own digital stores, 
                 service platforms, AI-powered systems, and customer interactions through 
                 one centralized SaaS ecosystem.
               </p>
-
-              <p>
+              <p className="hover:text-gray-200 transition-colors duration-300">
                 Whether you own a mobile store, cake business, perfume company, rental service, 
                 or customized product platform, you can collaborate with us and manage everything easily.
               </p>
-
-              <div className="bg-white/60 p-5 rounded-2xl border border-gray-100 shadow-sm">
-                <p className="font-medium text-gray-800 flex flex-wrap gap-3">
-                  <span className="flex items-center gap-1">✅ Affordable Pricing</span>
-                  <span className="flex items-center gap-1">✅ Scalable Dashboards</span>
-                  <span className="flex items-center gap-1">✅ AI Integrations</span>
-                  <span className="flex items-center gap-1">✅ Advanced Analytics</span>
-                </p>
-              </div>
             </div>
           </div>
 
-          {/* RIGHT SIDE */}
-          <div className="relative group mt-10 lg:mt-0">
-            {/* Glowing Background Effect */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-[2.5rem] blur opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+          {/* RIGHT SIDE (Floating Card) */}
+          <div className="relative group mt-10 lg:mt-0 animate-[bounce_8s_ease-in-out_infinite]">
+            {/* Dark Glowing Shadow */}
+            <div className="absolute -inset-1 bg-white opacity-5 rounded-[2.5rem] blur-xl group-hover:opacity-10 transition duration-700"></div>
             
-            <div className="relative flex flex-col justify-center items-center bg-white p-12 md:p-16 rounded-[2rem] shadow-2xl border border-gray-100 h-full text-center">
+            <div className="relative flex flex-col justify-center items-center bg-zinc-950 p-12 md:p-16 rounded-[2rem] border border-white/10 shadow-2xl h-full text-center hover:border-white/30 transition-colors duration-500">
               
-              {/* Optional Decorative Icon */}
-              <div className="w-20 h-20 bg-gradient-to-br from-gray-50 to-gray-200 rounded-full flex items-center justify-center mb-8 shadow-inner border border-gray-100">
-                <span className="text-3xl">🤝</span>
+              <div className="w-24 h-24 bg-black rounded-full flex items-center justify-center mb-8 border border-white/20 shadow-[0_0_30px_rgba(255,255,255,0.1)] group-hover:scale-110 transition-transform duration-500">
+                <span className="text-4xl">🏢</span>
               </div>
 
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 leading-tight">
-                Ready To <br /> Collaborate With Us?
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white leading-tight">
+                Ready To <br /> Collaborate?
               </h2>
               
-              <p className="text-gray-500 mb-10 text-lg">
-                Join our ecosystem and scale your operations with cutting-edge tools.
+              <p className="text-zinc-500 mb-10 text-lg">
+                Join our dark-mode ecosystem.
               </p>
 
               <button
                 onClick={() => navigate("/company-register")}
-                className="w-full md:w-auto bg-black text-white px-12 py-4 rounded-xl text-xl font-semibold hover:bg-gray-800 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 transition-all duration-300 flex items-center justify-center gap-2"
+                className="w-full bg-white text-black px-12 py-4 rounded-xl text-xl font-bold hover:bg-gray-200 shadow-[0_0_20px_rgba(255,255,255,0.2)] hover:shadow-[0_0_40px_rgba(255,255,255,0.5)] transform hover:-translate-y-2 transition-all duration-300"
               >
                 Join Now
-                <span className="text-xl group-hover:translate-x-1 transition-transform">→</span>
               </button>
             </div>
           </div>
 
         </div>
       </main>
-
     </div>
   );
 }
