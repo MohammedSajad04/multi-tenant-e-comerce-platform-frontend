@@ -1,12 +1,5 @@
-import {
-    useEffect,
-    useState
-} from "react";
-
-import {
-    useParams
-} from "react-router-dom";
-
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import SuperAdminLayout from "../../layouts/SuperAdminLayout";
 import api from "../../services/api";
 
@@ -33,6 +26,38 @@ function CompanyUsersPage() {
             setData(
                 response.data
             );
+
+        } catch (error) {
+
+            console.log(error);
+        }
+    };
+
+    const unblockUser = async (id) => {
+
+        try {
+
+            await api.put(
+                `accounts/unblock-user/${id}/`
+            );
+
+            fetchUsers();
+
+        } catch (error) {
+
+            console.log(error);
+        }
+    };
+
+    const blockUser = async (id) => {
+
+        try {
+
+            await api.put(
+                `accounts/block-user/${id}/`
+            );
+
+            fetchUsers();
 
         } catch (error) {
 
@@ -75,6 +100,10 @@ function CompanyUsersPage() {
                                 Role
                             </th>
 
+                            <th className="text-left p-4">
+                                Action
+                            </th>
+
                         </tr>
 
                     </thead>
@@ -97,7 +126,77 @@ function CompanyUsersPage() {
                                 </td>
 
                                 <td className="p-4">
-                                    {user.role}
+                                    <div className="flex gap-2 mt-2">
+
+                                        <span
+                                            className="
+                                                bg-blue-100
+                                                text-blue-700
+                                                px-2
+                                                py-1
+                                                rounded-lg
+                                                text-xs
+                                            "
+                                        >
+                                            {user.role}
+                                        </span>
+
+                                        {user.blocked && (
+
+                                            <span
+                                                className="
+                                                    bg-red-100
+                                                    text-red-700
+                                                    px-2
+                                                    py-1
+                                                    rounded-lg
+                                                    text-xs
+                                                "
+                                            >
+                                                Blocked
+                                            </span>
+
+                                        )}
+
+                                    </div>
+                                </td>
+
+                                <td className="p-4">
+                                    {user.blocked ? (
+
+                                        <button
+                                            onClick={() =>
+                                                unblockUser(user.id)
+                                            }
+                                            className="
+                                                bg-green-600
+                                                text-white
+                                                px-5
+                                                py-2
+                                                rounded-xl
+                                            "
+                                        >
+                                            Unblock User
+                                        </button>
+
+                                    ) : (
+
+                                        <button
+                                            onClick={() =>
+                                                blockUser(user.id)
+                                            }
+                                            className="
+                                                bg-red-600
+                                                text-white
+                                                px-5
+                                                py-2
+                                                rounded-xl
+                                            "
+                                        >
+                                            Block User
+                                        </button>
+
+                                    )}
                                 </td>
 
                             </tr>

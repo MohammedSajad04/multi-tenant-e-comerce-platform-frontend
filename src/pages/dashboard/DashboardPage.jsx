@@ -33,13 +33,13 @@ function DashboardPage() {
                <>
                 <DashboardNavbar user={user} />
 
-                <div className="bg-yellow-100 border border-yellow-400 p-4 rounded-xl mb-6">
+                <div className="rounded-2xl border border-amber-200 bg-amber-50/90 p-4 shadow-sm mb-6">
 
-                    <h2 className="font-bold">
+                    <h2 className="font-bold text-amber-900">
                         Subscription Status
                     </h2>
 
-                    <p>
+                    <p className="text-amber-800">
                         Check your active plan from Subscription page.
                     </p>
 
@@ -47,8 +47,8 @@ function DashboardPage() {
             </>
                 <DashboardStats dashboardData={dashboardData} />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="bg-white rounded-3xl shadow-lg p-8">
-                        <h2 className="text-3xl font-bold mb-6">
+                    <div className="data-card rounded-2xl p-7">
+                        <h2 className="page-title text-2xl mb-6">
                             Recent Orders
                         </h2>
                         {dashboardData.recent_orders.length === 0 ? (
@@ -61,7 +61,7 @@ function DashboardPage() {
 
                                     <div
                                         key={index}
-                                        className="border-b py-4"
+                                        className="border-b border-gray-100 py-4 last:border-0"
                                     >
 
                                         <h2 className="font-bold text-xl">
@@ -93,9 +93,9 @@ function DashboardPage() {
 
 
 
-                    <div className="bg-white rounded-3xl shadow-lg p-8">
+                    <div className="data-card rounded-2xl p-7">
 
-                        <h2 className="text-3xl font-bold mb-6">
+                        <h2 className="page-title text-2xl mb-6">
 
                             Quick Actions
 
@@ -106,7 +106,7 @@ function DashboardPage() {
                         <div className="flex flex-col gap-5">
 
 
-                            <button className="bg-black text-white py-4 rounded-2xl hover:opacity-90 transition">
+                            <button className="primary-action py-4 rounded-2xl font-semibold">
 
                                 Add Product
 
@@ -114,7 +114,7 @@ function DashboardPage() {
 
 
 
-                            <button className="bg-blue-500 text-white py-4 rounded-2xl hover:opacity-90 transition">
+                            <button className="bg-blue-600 text-white py-4 rounded-2xl font-semibold hover:bg-blue-700 shadow-lg shadow-blue-900/10">
 
                                 View Orders
 
@@ -122,7 +122,7 @@ function DashboardPage() {
 
 
 
-                            <button className="bg-green-500 text-white py-4 rounded-2xl hover:opacity-90 transition">
+                            <button className="bg-green-600 text-white py-4 rounded-2xl font-semibold hover:bg-green-700 shadow-lg shadow-green-900/10">
 
                                 Customers
 

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import api from "../../services/api";
 import { useCart } from "../../context/CartContext";
 import Navbar from "../../components/public/Navbar";
+import AIChatWidget from "../../components/ai/AIChatWidget";
 
 function ShopPage() {
     const [products, setProducts] = useState([]);
@@ -181,7 +182,8 @@ function ShopPage() {
                         ))}
                 </div>
             </div>
-        </div>
+        <AIChatWidget />
+    </div>
     );
 }
 

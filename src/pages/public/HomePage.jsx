@@ -102,8 +102,10 @@
 
 // export default HomePage;
 
-import { useNavigate } from "react-router-dom";
 
+
+import { useNavigate } from "react-router-dom";
+import AIChatWidget from "../../components/ai/AIChatWidget";
 function HomePage() {
   const navigate = useNavigate();
 

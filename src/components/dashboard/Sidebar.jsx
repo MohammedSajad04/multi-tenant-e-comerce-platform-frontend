@@ -61,15 +61,19 @@ function Sidebar() {
 
     return (
 
-        <div className="w-[260px] bg-black text-white min-h-screen p-6 flex flex-col justify-between">
+        <aside className="ui-sidebar responsive-sidebar sticky top-0 w-[260px] text-white min-h-screen p-6 flex flex-col justify-between">
 
             <div>
 
-                <h1 className="text-3xl font-bold mb-10">
+                <h1 className="text-3xl font-black tracking-tight mb-2">
 
                     SaaS Platform
 
                 </h1>
+
+                <p className="text-sm text-white/50 mb-10">
+                    Business workspace
+                </p>
 
                 <div className="flex flex-col gap-3">
 
@@ -78,10 +82,10 @@ function Sidebar() {
                         <Link
                             key={item.path}
                             to={item.path}
-                            className={`px-5 py-4 rounded-xl transition ${
+                            className={`px-5 py-4 rounded-2xl font-semibold transition ${
                                 location.pathname === item.path
-                                    ? "bg-white text-black"
-                                    : "bg-gray-900 hover:bg-gray-800"
+                                    ? "nav-pill-active"
+                                    : "nav-pill"
                             }`}
                         >
 
@@ -94,11 +98,11 @@ function Sidebar() {
                     <button
                         onClick={openStore}
                         className="
+                            nav-pill
                             px-5
                             py-4
-                            rounded-xl
-                            bg-gray-900
-                            hover:bg-gray-800
+                            rounded-2xl
+                            font-semibold
                             text-left
                             transition
                         "
@@ -110,10 +114,10 @@ function Sidebar() {
 
                         <Link
                             to="/companies"
-                            className={`px-5 py-4 rounded-xl transition ${
+                            className={`px-5 py-4 rounded-2xl font-semibold transition ${
                                 location.pathname === "/companies"
-                                    ? "bg-white text-black"
-                                    : "bg-gray-900 hover:bg-gray-800"
+                                    ? "nav-pill-active"
+                                    : "nav-pill"
                             }`}
                         >
 
@@ -129,7 +133,7 @@ function Sidebar() {
 
             <div>
 
-                <div className="mb-5 bg-gray-900 p-4 rounded-xl">
+                <div className="mb-5 rounded-2xl border border-white/10 bg-white/7 p-4 shadow-inner">
 
                     <h2 className="font-bold">
 
@@ -137,13 +141,13 @@ function Sidebar() {
 
                     </h2>
 
-                    <p className="text-gray-400 text-sm">
+                    <p className="text-white/55 text-sm break-all">
 
                         {user?.email}
 
                     </p>
 
-                    <p className="text-xs text-gray-500 mt-2">
+                    <p className="text-xs text-white/35 mt-2 uppercase tracking-widest">
 
                         {user?.role}
 
@@ -153,7 +157,7 @@ function Sidebar() {
 
                 <button
                     onClick={logout}
-                    className="w-full bg-red-500 hover:bg-red-600 py-4 rounded-xl font-bold transition"
+                    className="w-full rounded-2xl bg-red-500/95 hover:bg-red-500 py-4 font-bold shadow-lg shadow-red-950/20 transition"
                 >
 
                     Logout
@@ -162,7 +166,7 @@ function Sidebar() {
 
             </div>
 
-        </div>
+        </aside>
     );
 }
 

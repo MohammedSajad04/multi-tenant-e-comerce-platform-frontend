@@ -206,15 +206,20 @@ function ProductsPage() {
 
     return (
         <DashboardLayout>
-            <div className="min-h-screen bg-gray-50 p-6 md:p-10">
+            <div className="min-h-screen">
                 <div className="flex flex-col gap-5 md:flex-row md:justify-between md:items-center mb-10">
-                    <h1 className="text-4xl md:text-6xl font-bold text-gray-950">
-                        Products
-                    </h1>
+                    <div>
+                        <p className="eyebrow mb-2">
+                            Inventory
+                        </p>
+                        <h1 className="page-title text-4xl md:text-5xl">
+                            Products
+                        </h1>
+                    </div>
 
                     <button
                         onClick={openAddModal}
-                        className="bg-black text-white px-8 py-4 rounded-xl font-semibold shadow-sm hover:bg-gray-800 transition"
+                        className="primary-action px-8 py-4 rounded-xl font-semibold"
                     >
                         + Add Product
                     </button>
@@ -227,11 +232,11 @@ function ProductsPage() {
                 )}
 
                 {isLoading ? (
-                    <div className="rounded-2xl border border-gray-100 bg-white p-10 text-center text-gray-500 shadow-sm">
+                    <div className="data-card rounded-2xl p-10 text-center text-gray-500">
                         Loading products...
                     </div>
                 ) : products.length === 0 ? (
-                    <div className="rounded-2xl border border-gray-100 bg-white p-10 text-center text-gray-500 shadow-sm">
+                    <div className="data-card rounded-2xl p-10 text-center text-gray-500">
                         No products yet. Add your first product to get started.
                     </div>
                 ) : (
@@ -239,19 +244,19 @@ function ProductsPage() {
                         {products.map((product) => (
                             <div
                                 key={product.id}
-                                className="bg-white overflow-hidden rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition"
+                                className="data-card group overflow-hidden rounded-2xl"
                             >
                                 {product.image && (
                                     <img
                                         src={`http://127.0.0.1:8000${product.image}`}
                                         alt={product.name}
-                                        className="w-full h-60 object-cover"
+                                        className="w-full h-60 object-cover transition duration-500 group-hover:scale-[1.03]"
                                     />
                                 )}
 
                                 <div className="p-6">
                                     <div className="flex items-start justify-between gap-4 mb-3">
-                                        <h2 className="text-2xl font-bold text-gray-950">
+                                        <h2 className="page-title text-2xl">
                                             {product.name}
                                         </h2>
                                         
@@ -279,7 +284,7 @@ function ProductsPage() {
                                         <button
                                             type="button"
                                             onClick={() => openEditModal(product)}
-                                            className="flex-1 rounded-lg border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-700 hover:border-black hover:text-black transition"
+                                            className="ghost-action flex-1 rounded-lg px-4 py-3 text-sm font-semibold"
                                         >
                                             Edit
                                         </button>
@@ -287,7 +292,7 @@ function ProductsPage() {
                                         <button
                                             type="button"
                                             onClick={() => handleDelete(product.id)}
-                                            className="flex-1 rounded-lg bg-red-50 px-4 py-3 text-sm font-semibold text-red-600 hover:bg-red-100 transition"
+                                            className="danger-action flex-1 rounded-lg px-4 py-3 text-sm font-semibold"
                                         >
                                             Delete
                                         </button>
@@ -299,9 +304,9 @@ function ProductsPage() {
                 )}
 
                 {showModal && (
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50 p-4">
-                        <div className="bg-white w-full max-w-[900px] max-h-[90vh] overflow-y-auto p-6 md:p-10 rounded-2xl shadow-2xl">
-                            <h1 className="text-4xl md:text-5xl font-bold mb-10">
+                    <div className="modal-scrim fixed inset-0 bg-slate-950/60 backdrop-blur-sm flex justify-center items-center z-50 p-4">
+                        <div className="modal-panel bg-white w-full max-w-[900px] max-h-[90vh] overflow-y-auto p-6 md:p-10 rounded-3xl shadow-2xl border border-white/60">
+                            <h1 className="page-title text-3xl md:text-4xl mb-10">
                                 {editingProduct ? "Edit Product" : "Add Product"}
                             </h1>
 
@@ -310,7 +315,7 @@ function ProductsPage() {
                                 className="flex flex-col gap-10"
                             >
                                 <div>
-                                    <h2 className="text-3xl font-bold mb-6">
+                                    <h2 className="page-title text-2xl mb-6">
                                         Basic Info
                                     </h2>
 
@@ -409,7 +414,7 @@ function ProductsPage() {
                                     <button
                                         type="submit"
                                         disabled={isSaving}
-                                        className="bg-black text-white px-8 py-4 rounded-xl font-semibold flex-1 hover:bg-gray-800 transition disabled:cursor-not-allowed disabled:bg-gray-500"
+                                            className="primary-action px-8 py-4 rounded-xl font-semibold flex-1 disabled:cursor-not-allowed disabled:bg-gray-500"
                                     >
                                         {isSaving
                                             ? "Saving..."
@@ -421,7 +426,7 @@ function ProductsPage() {
                                     <button
                                         type="button"
                                         onClick={closeModal}
-                                        className="bg-gray-100 text-gray-800 px-8 py-4 rounded-xl font-semibold flex-1 hover:bg-gray-200 transition"
+                                        className="ghost-action px-8 py-4 rounded-xl font-semibold flex-1"
                                     >
                                         Cancel
                                     </button>

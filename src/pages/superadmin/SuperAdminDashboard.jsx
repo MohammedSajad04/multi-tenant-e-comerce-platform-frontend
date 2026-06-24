@@ -55,9 +55,14 @@ function SuperAdminDashboard() {
 
     return (
         <SuperAdminLayout>
-            <h1 className="text-5xl font-bold mb-10">
-                Platform Dashboard
-            </h1>
+            <div className="mb-10 animate-enter">
+                <p className="eyebrow mb-2">
+                    Platform overview
+                </p>
+                <h1 className="page-title text-4xl md:text-5xl">
+                    Platform Dashboard
+                </h1>
+            </div>
 
             {error && (
                 <p className="mb-6 rounded-xl bg-red-100 p-4 text-red-700">
@@ -65,16 +70,16 @@ function SuperAdminDashboard() {
                 </p>
             )}
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 animate-enter-delay">
                 {cards.map((card) => (
                     <div
                         key={card.label}
-                        className="bg-white p-8 rounded-3xl shadow-lg"
+                        className="stat-card rounded-2xl p-7"
                     >
-                        <h2 className="text-gray-500 text-xl mb-4">
+                        <h2 className="eyebrow mb-4">
                             {card.label}
                         </h2>
-                        <p className="text-5xl font-bold">
+                        <p className="page-title text-4xl md:text-5xl">
                             {loading ? "..." : card.value}
                         </p>
                     </div>

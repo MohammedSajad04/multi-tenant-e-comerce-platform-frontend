@@ -141,115 +141,126 @@ const buyPlan = async (plan) => {
 if (!subscription) {
 
     return (
-        <div>
+        <div className="pricing-shell relative grid min-h-screen place-items-center px-5 text-white">
             Loading...
         </div>
     );
 }
 
+const planFeatures = [
+    "Product management",
+    "Orders management",
+    "Customer management",
+    "Analytics dashboard",
+];
+
 return (
 
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-10">
+    <div className="pricing-shell relative flex min-h-screen items-center justify-center px-5 py-10 md:px-10">
 
-        <div className="flex justify-end mb-6">
+        <div className="relative z-10 w-full max-w-7xl">
 
             <button
                 onClick={() => navigate("/")}
-                className="
-                    bg-red-500
-                    text-white
-                    w-12
-                    h-12
-                    rounded-full
-                    text-2xl
-                    font-bold
-                "
+                className="absolute right-0 top-0 grid h-11 w-11 place-items-center rounded-full border border-emerald-400/60 bg-black/40 text-emerald-100 hover:bg-emerald-400 hover:text-black"
+                aria-label="Close plans"
             >
-
-                ✕
-
+                <X size={20} />
             </button>
 
-            <h1 className="text-5xl font-bold text-center mb-12">
+            <div className="mx-auto mb-14 max-w-3xl text-center">
+                <p className="mb-4 text-sm tracking-[0.32em] text-emerald-300/80">
+                    SAAS MEMBERSHIP
+                </p>
+                <h1 className="text-4xl font-medium leading-tight text-white md:text-6xl">
+                    Choose Your Favorite Package.
+                </h1>
+                <p className="mt-5 text-sm leading-7 text-white/48 md:text-base">
+                    Select the plan that fits your company workflow and activate your workspace.
+                </p>
+                <div className="mt-6 inline-flex items-center gap-3 rounded-full border border-emerald-400/30 bg-black/30 px-5 py-2 text-sm text-white/75">
+                    <span>Monthly</span>
+                    <span className="h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(0,220,129,0.9)]"></span>
+                    <span>Yearly</span>
+                </div>
+            </div>
 
-                Choose Your Plan
+            <div className="grid gap-7 md:grid-cols-3 md:items-start">
 
-            </h1>
+                <div className="pricing-card rounded-xl p-7 md:mt-11">
 
-            <div className="grid md:grid-cols-3 gap-8">
-
-                <div className="bg-white rounded-3xl shadow-lg p-8 border-2 border-green-500">
-
-                    <h2 className="text-3xl font-bold mb-4">
-
+                    <h2 className="mb-5 text-2xl font-normal text-white/85">
                         Monthly
-
                     </h2>
 
-                    <h1 className="text-5xl font-bold mb-4">
+                    <div className="pricing-divider mb-7"></div>
 
-                        ₹499
-
+                    <h1 className="mb-4 text-5xl font-light tracking-tight text-white">
+                        Rs.499
                     </h1>
 
-                     {!subscription.is_trial_used && (
-                        <p className="text-green-600 font-bold mb-4">
+                    {!subscription.is_trial_used && (
+                        <p className="mb-5 rounded-full border border-emerald-400/40 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-200">
                             First Month Free Trial
                         </p>
                     )}
 
-                    <ul className="space-y-3 mb-8">
-
-                        <li>✓ Product Management</li>
-                        <li>✓ Orders Management</li>
-                        <li>✓ Customer Management</li>
-                        <li>✓ Analytics Dashboard</li>
-                    </ul>
-                    {!subscription.is_trial_used && (
-                            <button
-                                onClick={startTrial}
-                                className="w-full bg-green-600 text-white py-4 rounded-xl mb-3"
+                    <ul className="mb-8 space-y-4 text-sm leading-6 text-white/70">
+                        {planFeatures.map((feature) => (
+                            <li
+                                key={feature}
+                                className="flex gap-3"
                             >
-                                Start Trial
-                            </button>
-                        )}
+                                <span className="pricing-check">✓</span>
+                                {feature}
+                            </li>
+                        ))}
+                    </ul>
+
+                    {!subscription.is_trial_used && (
+                        <button
+                            onClick={startTrial}
+                            className="pricing-action mb-3 w-full rounded-md py-4 text-sm font-medium"
+                        >
+                            Start Trial
+                        </button>
+                    )}
+
                     <button
                         onClick={() =>
                             buyPlan(
                                 "monthly"
                             )
                         }
-                        className="w-full bg-black text-white py-4 rounded-xl"
+                        className="pricing-action w-full rounded-md py-4 text-sm font-medium"
                     >
-
                         Buy Monthly
-
                     </button>
 
                 </div>
 
-                <div className="bg-white rounded-3xl shadow-lg p-8">
+                <div className="pricing-card pricing-card-featured rounded-xl p-7">
 
-                    <h2 className="text-3xl font-bold mb-4">
-
+                    <h2 className="mb-5 text-2xl font-normal text-white/85">
                         6 Months
-
                     </h2>
 
-                    <h1 className="text-5xl font-bold mb-4">
+                    <div className="pricing-divider mb-7"></div>
 
-                        ₹2499
-
+                    <h1 className="mb-4 text-5xl font-light tracking-tight text-white">
+                        Rs.2499
                     </h1>
 
-                    <ul className="space-y-3 mb-8">
-
-                        <li>✓ Product Management</li>
-                        <li>✓ Orders Management</li>
-                        <li>✓ Customer Management</li>
-                        <li>✓ Analytics Dashboard</li>
-                        <li>✓ Priority Support</li>
-
+                    <ul className="mb-8 space-y-4 text-sm leading-6 text-white/70">
+                        {[...planFeatures, "Priority support"].map((feature) => (
+                            <li
+                                key={feature}
+                                className="flex gap-3"
+                            >
+                                <span className="pricing-check">✓</span>
+                                {feature}
+                            </li>
+                        ))}
                     </ul>
 
                     <button
@@ -258,38 +269,35 @@ return (
                                 "six_month"
                             )
                         }
-                        className="w-full bg-black text-white py-4 rounded-xl"
+                        className="pricing-action w-full rounded-md py-4 text-sm font-medium"
                     >
-
                         Buy 6 Months
-
                     </button>
 
                 </div>
 
-                <div className="bg-white rounded-3xl shadow-lg p-8">
+                <div className="pricing-card rounded-xl p-7 md:mt-11">
 
-                    <h2 className="text-3xl font-bold mb-4">
-
+                    <h2 className="mb-5 text-2xl font-normal text-white/85">
                         Yearly
-
                     </h2>
 
-                    <h1 className="text-5xl font-bold mb-4">
+                    <div className="pricing-divider mb-7"></div>
 
-                        ₹4999
-
+                    <h1 className="mb-4 text-5xl font-light tracking-tight text-white">
+                        Rs.4999
                     </h1>
 
-                    <ul className="space-y-3 mb-8">
-
-                        <li>✓ Product Management</li>
-                        <li>✓ Orders Management</li>
-                        <li>✓ Customer Management</li>
-                        <li>✓ Analytics Dashboard</li>
-                        <li>✓ Priority Support</li>
-                        <li>✓ Best Value</li>
-
+                    <ul className="mb-8 space-y-4 text-sm leading-6 text-white/70">
+                        {[...planFeatures, "Priority support", "Best value"].map((feature) => (
+                            <li
+                                key={feature}
+                                className="flex gap-3"
+                            >
+                                <span className="pricing-check">✓</span>
+                                {feature}
+                            </li>
+                        ))}
                     </ul>
 
                     <button
@@ -298,11 +306,9 @@ return (
                                 "yearly"
                             )
                         }
-                        className="w-full bg-black text-white py-4 rounded-xl"
+                        className="pricing-action w-full rounded-md py-4 text-sm font-medium"
                     >
-
                         Buy Yearly
-
                     </button>
 
                 </div>

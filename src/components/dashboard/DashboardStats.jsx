@@ -5,16 +5,16 @@ function DashboardStats({ dashboardData }) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
 
 
-            <div className="bg-white rounded-3xl shadow-lg p-8">
+            <div className="stat-card rounded-2xl p-7">
 
-                <h2 className="text-gray-500 text-xl mb-3">
+                <h2 className="eyebrow mb-3">
 
                     Total Products
 
                 </h2>
 
 
-                <h1 className="text-5xl font-bold">
+                <h1 className="page-title text-4xl md:text-5xl">
 
                     {dashboardData.total_products}
 
@@ -24,16 +24,16 @@ function DashboardStats({ dashboardData }) {
 
 
 
-            <div className="bg-white rounded-3xl shadow-lg p-8">
+            <div className="stat-card rounded-2xl p-7">
 
-                <h2 className="text-gray-500 text-xl mb-3">
+                <h2 className="eyebrow mb-3">
 
                     Total Orders
 
                 </h2>
 
 
-                <h1 className="text-5xl font-bold">
+                <h1 className="page-title text-4xl md:text-5xl">
 
                     {dashboardData.total_orders}
 
@@ -43,16 +43,16 @@ function DashboardStats({ dashboardData }) {
 
 
 
-            <div className="bg-white rounded-3xl shadow-lg p-8">
+            <div className="stat-card rounded-2xl p-7">
 
-                <h2 className="text-gray-500 text-xl mb-3">
+                <h2 className="eyebrow mb-3">
 
                     Revenue
 
                 </h2>
 
 
-                <h1 className="text-5xl font-bold">
+                <h1 className="page-title text-4xl md:text-5xl">
 
                     ₹ {dashboardData.total_revenue}
 

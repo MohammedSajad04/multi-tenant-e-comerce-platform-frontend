@@ -10,24 +10,27 @@ function SuperAdminLayout({ children }) {
 
     return (
 
-        <div className="min-h-screen flex bg-gray-100">
+        <div className="app-shell responsive-shell min-h-screen flex">
 
 
-            <div className="w-[280px] bg-black text-white p-8">
+            <aside className="ui-sidebar responsive-sidebar sticky top-0 w-[280px] min-h-screen text-white p-6 lg:p-8">
 
-                <h1 className="text-4xl font-bold mb-12">
+                <h1 className="text-3xl font-black mb-3 tracking-tight">
 
-                    SUPER ADMIN
+                    Super Admin
 
                 </h1>
 
+                <p className="text-sm text-white/50 mb-10">
+                    Platform control center
+                </p>
 
 
-                <div className="flex flex-col gap-5">
+                <div className="flex flex-col gap-3">
 
                     <Link
                         to="/super-admin"
-                        className="bg-gray-900 p-5 rounded-2xl"
+                        className="nav-pill p-4 rounded-2xl font-semibold"
                     >
 
                         Dashboard
@@ -37,7 +40,7 @@ function SuperAdminLayout({ children }) {
 
                     <Link
                         to="/manage-companies"
-                        className="bg-gray-900 p-5 rounded-2xl"
+                        className="nav-pill p-4 rounded-2xl font-semibold"
                     >
 
                         Companies
@@ -47,7 +50,7 @@ function SuperAdminLayout({ children }) {
 
                     <Link
                         to="/manage-users"
-                        className="bg-gray-900 p-5 rounded-2xl"
+                        className="nav-pill p-4 rounded-2xl font-semibold"
                     >
 
                         Users
@@ -57,7 +60,7 @@ function SuperAdminLayout({ children }) {
 
                     <Link
                         to="/platform-orders"
-                        className="bg-gray-900 p-5 rounded-2xl"
+                        className="nav-pill p-4 rounded-2xl font-semibold"
                     >
 
                         Orders
@@ -67,7 +70,7 @@ function SuperAdminLayout({ children }) {
 
                     <Link
                         to="/analytics"
-                        className="bg-gray-900 p-5 rounded-2xl"
+                        className="nav-pill p-4 rounded-2xl font-semibold"
                     >
 
                         Analytics
@@ -76,15 +79,15 @@ function SuperAdminLayout({ children }) {
 
                 </div>
 
-            </div>
+            </aside>
 
 
 
-            <div className="flex-1 p-10">
+            <main className="app-main responsive-content flex-1 p-6 md:p-10">
 
                 {children}
 
-            </div>
+            </main>
 
         </div>
     )

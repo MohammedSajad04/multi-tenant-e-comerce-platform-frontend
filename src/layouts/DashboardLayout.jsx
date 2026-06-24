@@ -6,17 +6,17 @@ function DashboardLayout({ children }) {
 
     return (
 
-        <div className="flex min-h-screen">
+        <div className="app-shell responsive-shell flex min-h-screen">
 
             <Sidebar />
 
 
 
-            <div className="flex-1 bg-gray-100 p-10">
+            <main className="app-main responsive-content flex-1 p-6 md:p-10">
 
                 {children}
 
-            </div>
+            </main>
 
         </div>
     )

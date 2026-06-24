@@ -60,6 +60,9 @@ import CompanyUsersPage from "./pages/superadmin/CompanyUsersPage";
 
 import SubscriptionHistoryPage from "./pages/superadmin/SubscriptionHistoryPage";
 
+import AIAssistant from "./pages/company/AIAssistant";
+
+import AIAssistantPage from "./pages/public/AIAssistantPage";
 
 function App() {
 
@@ -302,6 +305,14 @@ function App() {
               <SubscriptionHistoryPage />
           </SuperAdminRoute>
       }
+  />
+    <Route
+      path="/ai"
+      element={<AIAssistant />}
+  />
+    <Route
+      path="/ai-assistant"
+      element={<AIAssistantPage />}
   />
 
     </Routes>

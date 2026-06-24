@@ -5,13 +5,13 @@ function Navbar({ companyName = "SAJAD SHOP" }) {
     const [isProfileOpen, setIsProfileOpen] = useState(false);
 
     return (
-        <nav className="bg-[#0a0a0a] text-white px-6 md:px-10 py-4 flex justify-between items-center sticky top-0 z-50 shadow-md border-b border-gray-800">
+        <nav className="sticky top-0 z-50 flex items-center justify-between border-b border-white/10 bg-slate-950/90 px-5 py-4 text-white shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:px-10">
             <div className="flex-1 hidden md:block"></div>
 
             <div className="flex-1 flex justify-start md:justify-center">
                 <Link
                     to="/shop"
-                    className="text-2xl md:text-3xl font-extrabold tracking-widest uppercase hover:text-gray-300 transition-colors duration-300"
+                    className="text-xl md:text-3xl font-black tracking-widest uppercase hover:text-blue-100 transition-colors duration-300"
                 >
                     {companyName}
                 </Link>
@@ -20,7 +20,7 @@ function Navbar({ companyName = "SAJAD SHOP" }) {
             <div className="flex-1 flex justify-end items-center gap-5 md:gap-7">
                 <Link
                     to="/wishlist"
-                    className="hover:scale-110 hover:text-red-400 transition-all duration-200"
+                    className="rounded-full p-2 text-white/80 hover:scale-110 hover:bg-white/10 hover:text-red-300 transition-all duration-200"
                     title="Wishlist"
                 >
                     <svg
@@ -40,7 +40,7 @@ function Navbar({ companyName = "SAJAD SHOP" }) {
 
                 <Link
                     to="/cart"
-                    className="hover:scale-110 hover:text-green-400 transition-all duration-200 relative"
+                    className="relative rounded-full p-2 text-white/80 hover:scale-110 hover:bg-white/10 hover:text-green-300 transition-all duration-200"
                     title="Cart"
                 >
                     <svg
@@ -63,7 +63,7 @@ function Navbar({ companyName = "SAJAD SHOP" }) {
 
                 <Link
                     to="/my-orders"
-                    className="hover:scale-110 hover:text-blue-400 transition-all duration-200"
+                    className="rounded-full p-2 text-white/80 hover:scale-110 hover:bg-white/10 hover:text-blue-300 transition-all duration-200"
                     title="My Orders"
                 >
                     <svg
@@ -81,12 +81,12 @@ function Navbar({ companyName = "SAJAD SHOP" }) {
                     </svg>
                 </Link>
 
-                <div className="w-px h-8 bg-gray-700 mx-1"></div>
+                <div className="w-px h-8 bg-white/15 mx-1"></div>
 
                 <div className="relative">
                     <button
                         onClick={() => setIsProfileOpen(!isProfileOpen)}
-                        className="flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full border-2 border-transparent hover:border-gray-400 transition-all duration-300 overflow-hidden focus:outline-none focus:ring-2 focus:ring-white"
+                        className="flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full border border-white/15 hover:border-white/60 transition-all duration-300 overflow-hidden focus:outline-none focus:ring-2 focus:ring-white"
                     >
                         <img
                             src="https://api.dicebear.com/7.x/avataaars/svg?seed=User"
@@ -96,7 +96,7 @@ function Navbar({ companyName = "SAJAD SHOP" }) {
                     </button>
 
                     {isProfileOpen && (
-                        <div className="absolute right-0 mt-3 w-48 bg-white text-black rounded-xl shadow-2xl py-2 z-50 border border-gray-100">
+                        <div className="modal-panel absolute right-0 mt-3 w-48 bg-white text-black rounded-2xl shadow-2xl py-2 z-50 border border-gray-100">
                             <Link
                                 to="/profile-details"
                                 onClick={() => setIsProfileOpen(false)}
