@@ -12,7 +12,7 @@ import { AuthProvider } from './context/AuthContext'
 
 import { CartProvider } from "./context/CartContext"
 
-
+import { WishlistProvider } from "./context/WishlistContext";
 
 ReactDOM.createRoot(
   document.getElementById('root')
@@ -26,7 +26,11 @@ ReactDOM.createRoot(
 
         <CartProvider>
 
-          <App />
+          <WishlistProvider>
+
+              <App />
+
+          </WishlistProvider>
 
         </CartProvider>
 

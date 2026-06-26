@@ -34,7 +34,13 @@ function UserOrdersPage() {
 
     return (
         <>
-            <Navbar />
+            <Navbar
+                companyName={
+                    localStorage.getItem(
+                        "company_name"
+                    )
+                }
+            />
 
             <div className="min-h-screen bg-gray-100 p-10">
 

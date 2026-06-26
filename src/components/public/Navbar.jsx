@@ -1,123 +1,148 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "../../context/CartContext";
+import { useWishlist } from "../../context/WishlistContext";
 
-function Navbar({ companyName = "SAJAD SHOP" }) {
+function Navbar({ companyName }) {
+
     const [isProfileOpen, setIsProfileOpen] = useState(false);
 
+    const { cartItems } = useCart();
+
+    const { wishlistItems } = useWishlist();
+
+    const cartCount = cartItems.reduce(
+        (total, item) => total + item.quantity,
+        0
+    );
+
+    const wishlistCount = wishlistItems.length;
+
+    const currentCompany =
+        companyName ||
+        localStorage.getItem("company_name") ||
+        "STORE";
+
+    const handleLogout = () => {
+
+        localStorage.clear();
+
+        window.location.href = "/login";
+    };
+
     return (
-        <nav className="sticky top-0 z-50 flex items-center justify-between border-b border-white/10 bg-slate-950/90 px-5 py-4 text-white shadow-2xl shadow-slate-950/20 backdrop-blur-xl md:px-10">
+
+        <nav className="sticky top-0 z-50 flex items-center justify-between border-b border-white/10 bg-slate-950/95 px-5 py-4 text-white backdrop-blur-xl">
+
             <div className="flex-1 hidden md:block"></div>
 
             <div className="flex-1 flex justify-start md:justify-center">
+
                 <Link
                     to="/shop"
-                    className="text-xl md:text-3xl font-black tracking-widest uppercase hover:text-blue-100 transition-colors duration-300"
+                    className="text-xl md:text-3xl font-black tracking-widest uppercase hover:text-blue-200 transition"
                 >
-                    {companyName}
+                    {currentCompany}
                 </Link>
+
             </div>
 
-            <div className="flex-1 flex justify-end items-center gap-5 md:gap-7">
+            <div className="flex-1 flex justify-end items-center gap-5">
+
+                {/* WISHLIST */}
+
                 <Link
                     to="/wishlist"
-                    className="rounded-full p-2 text-white/80 hover:scale-110 hover:bg-white/10 hover:text-red-300 transition-all duration-200"
-                    title="Wishlist"
+                    className="relative p-2 hover:scale-110 transition"
                 >
-                    <svg
-                        className="w-6 h-6 md:w-7 md:h-7"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                        />
-                    </svg>
+
+                    ❤️
+
+                    {wishlistCount > 0 && (
+
+                        <span className="absolute -top-2 -right-2 bg-red-500 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center">
+
+                            {wishlistCount}
+
+                        </span>
+
+                    )}
+
                 </Link>
+
+                {/* CART */}
 
                 <Link
                     to="/cart"
-                    className="relative rounded-full p-2 text-white/80 hover:scale-110 hover:bg-white/10 hover:text-green-300 transition-all duration-200"
-                    title="Cart"
+                    className="relative p-2 hover:scale-110 transition"
                 >
-                    <svg
-                        className="w-6 h-6 md:w-7 md:h-7"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                        />
-                    </svg>
-                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
-                        3
-                    </span>
+
+                    🛒
+
+                    {cartCount > 0 && (
+
+                        <span className="absolute -top-2 -right-2 bg-green-500 text-white w-5 h-5 rounded-full text-xs flex items-center justify-center">
+
+                            {cartCount}
+
+                        </span>
+
+                    )}
+
                 </Link>
+
+                {/* ORDERS */}
 
                 <Link
                     to="/my-orders"
-                    className="rounded-full p-2 text-white/80 hover:scale-110 hover:bg-white/10 hover:text-blue-300 transition-all duration-200"
-                    title="My Orders"
+                    className="p-2 hover:scale-110 transition"
                 >
-                    <svg
-                        className="w-6 h-6 md:w-7 md:h-7"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
-                        />
-                    </svg>
+                    📦
                 </Link>
 
-                <div className="w-px h-8 bg-white/15 mx-1"></div>
+                {/* PROFILE */}
 
                 <div className="relative">
+
                     <button
-                        onClick={() => setIsProfileOpen(!isProfileOpen)}
-                        className="flex items-center justify-center w-10 h-10 md:w-11 md:h-11 rounded-full border border-white/15 hover:border-white/60 transition-all duration-300 overflow-hidden focus:outline-none focus:ring-2 focus:ring-white"
+                        onClick={() =>
+                            setIsProfileOpen(
+                                !isProfileOpen
+                            )
+                        }
+                        className="w-10 h-10 rounded-full bg-white text-black font-bold"
                     >
-                        <img
-                            src="https://api.dicebear.com/7.x/avataaars/svg?seed=User"
-                            alt="Profile"
-                            className="w-full h-full object-cover bg-white"
-                        />
+                        U
                     </button>
 
                     {isProfileOpen && (
-                        <div className="modal-panel absolute right-0 mt-3 w-48 bg-white text-black rounded-2xl shadow-2xl py-2 z-50 border border-gray-100">
+
+                        <div className="absolute right-0 mt-3 w-48 bg-white text-black rounded-xl shadow-xl">
+
                             <Link
                                 to="/profile-details"
-                                onClick={() => setIsProfileOpen(false)}
-                                className="block px-5 py-3 hover:bg-gray-100 font-semibold transition-colors"
+                                className="block px-4 py-3 hover:bg-gray-100"
                             >
-                                Details
+                                Profile
                             </Link>
-                            <hr className="border-gray-100" />
+
                             <button
-                                onClick={() => setIsProfileOpen(false)}
-                                className="w-full text-left px-5 py-3 text-red-600 hover:bg-red-50 font-semibold transition-colors"
+                                onClick={handleLogout}
+                                className="block w-full text-left px-4 py-3 text-red-500 hover:bg-red-50"
                             >
                                 Logout
                             </button>
+
                         </div>
+
                     )}
+
                 </div>
+
             </div>
+
         </nav>
     );
 }
 
 export default Navbar;
-

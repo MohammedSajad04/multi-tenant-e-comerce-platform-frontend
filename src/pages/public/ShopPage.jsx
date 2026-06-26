@@ -3,7 +3,9 @@ import { Link } from "react-router-dom";
 import api from "../../services/api";
 import { useCart } from "../../context/CartContext";
 import Navbar from "../../components/public/Navbar";
-import AIChatWidget from "../../components/ai/AIChatWidget";
+import FloatingAIButton from "../../components/ai/FloatingAIButton";
+import { useWishlist } from "../../context/WishlistContext";
+
 
 function ShopPage() {
     const [products, setProducts] = useState([]);
@@ -12,7 +14,7 @@ function ShopPage() {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     
     const { addToCart } = useCart();
-
+    const { addToWishlist } = useWishlist();
     const categories = ["All", "Mobile", "Electronics"];
 
     useEffect(() => {
@@ -22,7 +24,14 @@ function ShopPage() {
     const fetchProducts = async () => {
         try {
             const tenantId =localStorage.getItem("tenant_id");
-            const response = await api.get(`products/list/?tenant=${tenantId}`);
+            const response = await api.get(
+                `products/list/?tenant=${tenantId}&page=1`
+            );
+
+            setProducts(
+                response.data.results.slice(0, 8)
+            );
+
             setProducts(response.data);
             if (response.data.length > 0) {
 
@@ -163,27 +172,89 @@ function ShopPage() {
                                         ₹ {product.price}
                                     </h1>
 
-                                    <div className="flex gap-3">
-                                        <Link
-                                            to={`/product/${product.id}`}
-                                            className="flex-1 bg-gray-900 text-white text-center px-4 py-2.5 rounded-xl font-medium hover:bg-gray-800 transition-colors"
-                                        >
-                                            View
-                                        </Link>
+                                    <div className="flex flex-col gap-2">
+
                                         <button
-                                            onClick={() => addToCart(product)}
-                                            className="flex-[1.5] bg-green-500 text-white text-center px-4 py-2.5 rounded-xl font-medium hover:bg-green-600 transition-colors active:scale-95"
+                                            onClick={() =>
+                                                addToWishlist(product)
+                                            }
+                                            className="
+                                            w-full
+                                            bg-pink-500
+                                            text-white
+                                            py-2
+                                            rounded-xl
+                                            hover:bg-pink-600
+                                            transition
+                                            "
                                         >
-                                            Add To Cart
+                                            ❤️ Wishlist
                                         </button>
+
+                                        <div className="flex gap-2">
+
+                                            <Link
+                                                to={`/product/${product.id}`}
+                                                className="
+                                                flex-1
+                                                bg-black
+                                                text-white
+                                                text-center
+                                                py-2
+                                                rounded-xl
+                                                "
+                                            >
+                                                View
+                                            </Link>
+
+                                            <button
+                                                onClick={() =>
+                                                    addToCart(product)
+                                                }
+                                                className="
+                                                flex-1
+                                                bg-green-500
+                                                text-white
+                                                py-2
+                                                rounded-xl
+                                                hover:bg-green-600
+                                                "
+                                            >
+                                                Add To Cart
+                                            </button>
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                         ))}
                 </div>
+
+                <div className="flex justify-center mt-14">
+
+                    <Link
+                        to="/products"
+                        className="
+                        bg-black
+                        text-white
+                        px-10
+                        py-4
+                        rounded-2xl
+                        text-lg
+                        font-bold
+                        hover:scale-105
+                        transition
+                        "
+                    >
+                        View All Products
+                    </Link>
+
+                </div>
+
             </div>
-        <AIChatWidget />
-    </div>
+            <FloatingAIButton />
+        </div>
     );
 }
 

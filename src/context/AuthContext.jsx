@@ -78,6 +78,12 @@ export function AuthProvider({ children }) {
 
         localStorage.removeItem("refresh");
 
+        localStorage.removeItem("tenant_id");
+
+        localStorage.removeItem("company_name");
+
+        localStorage.removeItem("role");
+
         setUser(null);
 
         window.location.href = "/login";

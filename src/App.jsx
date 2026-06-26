@@ -36,6 +36,8 @@ import ShopPage from "./pages/public/ShopPage";
 
 import CartPage from "./pages/public/CartPage";
 
+import WishlistPage from "./pages/public/WishlistPage";
+
 import CheckoutPage from "./pages/public/CheckoutPage";
 
 import OrderSuccessPage from "./pages/public/OrderSuccessPage";
@@ -63,6 +65,8 @@ import SubscriptionHistoryPage from "./pages/superadmin/SubscriptionHistoryPage"
 import AIAssistant from "./pages/company/AIAssistant";
 
 import AIAssistantPage from "./pages/public/AIAssistantPage";
+
+import ProductsPage from "./pages/public/ProductsPage";
 
 function App() {
 
@@ -129,6 +133,14 @@ function App() {
         }
         
       />
+      <Route
+        path="/wishlist"
+        element={
+            <CustomerRoute>
+                <WishlistPage />
+            </CustomerRoute>
+        }
+    />
       <Route
         path="/checkout"
         element={
@@ -313,6 +325,22 @@ function App() {
     <Route
       path="/ai-assistant"
       element={<AIAssistantPage />}
+  />
+    <Route
+      path="/company-ai"
+      element={
+          <AdminRoute>
+              <AIAssistant />
+          </AdminRoute>
+      }
+  />
+    <Route
+      path="/products"
+      element={
+          <CustomerRoute>
+              <ProductsPage />
+          </CustomerRoute>
+      }
   />
 
     </Routes>

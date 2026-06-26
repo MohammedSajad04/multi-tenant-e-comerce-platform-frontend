@@ -57,6 +57,10 @@ function Sidebar() {
             name: "Subscription",
             path: "/subscription",
         },
+        {
+            name: "AI Assistant",
+            path: "/company-ai"
+        },
     ];
 
     return (

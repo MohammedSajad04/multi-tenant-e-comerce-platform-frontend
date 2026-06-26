@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import { useCart } from "../../context/CartContext";
+import { useWishlist } from "../../context/WishlistContext";
 
 function ProductDetailsPage() {
 
@@ -10,6 +11,9 @@ function ProductDetailsPage() {
     const navigate = useNavigate();
 
     const { addToCart } = useCart();
+
+    const { addToWishlist } =
+        useWishlist();
 
     const [product, setProduct] = useState(null);
 
@@ -132,24 +136,32 @@ function ProductDetailsPage() {
 
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex flex-col gap-3">
 
                     <button
-                        onClick={handleAddToCart}
-                        className="flex-1 bg-black text-white py-4 rounded-xl hover:bg-gray-800 transition"
+                        onClick={() =>
+                            addToWishlist(product)
+                        }
+                        className="
+                        bg-pink-500
+                        text-white
+                        py-4
+                        rounded-xl
+                        "
                     >
-
-                        Add To Cart
-
+                        ❤️ Add To Wishlist
                     </button>
 
                     <button
-                        onClick={() => navigate("/cart")}
-                        className="flex-1 border border-black py-4 rounded-xl hover:bg-gray-100 transition"
+                        onClick={handleAddToCart}
+                        className="
+                        bg-black
+                        text-white
+                        py-4
+                        rounded-xl
+                        "
                     >
-
-                        View Cart
-
+                        Add To Cart
                     </button>
 
                 </div>
