@@ -1,3 +1,4 @@
+
 import {
     useEffect,
     useState
@@ -11,6 +12,12 @@ function ManageCompaniesPage() {
     const [companies, setCompanies] = useState([]);
 
     const [selectedCompany, setSelectedCompany] = useState(null);
+
+    const [showReasonModal, setShowReasonModal] = useState(false);
+
+    const [reason, setReason] = useState("");
+
+    const [actionType, setActionType] = useState("");
 
     useEffect(() => {
 
@@ -36,38 +43,61 @@ function ManageCompaniesPage() {
 
     const approveCompany = async (id) => {
 
-        try {
+    try {
 
-            await api.put(
-                `tenants/superadmin/approve/${id}/`
-            );
+        const response = await api.put(
+            `tenants/superadmin/approve/${id}/`
+        );
 
-            fetchCompanies();
+        console.log(response.data);
 
-            setSelectedCompany(null);
+        await fetchCompanies();
 
-        } catch (error) {
+        setSelectedCompany(null);
 
-            console.log(error);
-        }
-    };
+        alert("Company approved successfully.");
+
+    } catch (error) {
+
+        console.log(error);
+
+        alert(
+            error.response?.data?.error ||
+            "Failed to approve company."
+        );
+    }
+};
 
     const rejectCompany = async (id) => {
 
         try {
 
             await api.put(
-                `tenants/superadmin/reject/${id}/`
+
+                `tenants/superadmin/reject/${id}/`,
+
+                {
+
+                    reason,
+
+                }
+
             );
 
-            fetchCompanies();
+            await fetchCompanies();
 
             setSelectedCompany(null);
+
+            setShowReasonModal(false);
+
+            setReason("");
 
         } catch (error) {
 
             console.log(error);
+
         }
+
     };
 
     const blockCompany = async (id) => {
@@ -75,17 +105,69 @@ function ManageCompaniesPage() {
         try {
 
             await api.put(
-                `tenants/superadmin/block/${id}/`
+
+                `tenants/superadmin/block/${id}/`,
+
+                {
+
+                    reason,
+
+                }
+
             );
 
-            fetchCompanies();
+            await fetchCompanies();
 
             setSelectedCompany(null);
+
+            setShowReasonModal(false);
+
+            setReason("");
 
         } catch (error) {
 
             console.log(error);
+
         }
+
+    };
+
+    const deleteCompany = async (id) => {
+
+        try {
+
+            await api.delete(
+
+                `tenants/superadmin/delete/${id}/`,
+
+                {
+
+                    data: {
+
+                        reason,
+
+                    }
+
+                }
+
+            );
+
+            await fetchCompanies();
+
+            setSelectedCompany(null);
+
+            setShowReasonModal(false);
+
+            setReason("");
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+        }
+
     };
 
     const unblockCompany = async (id) => {
@@ -381,11 +463,13 @@ function ManageCompaniesPage() {
                                     </button>
 
                                     <button
-                                        onClick={() =>
-                                            rejectCompany(
-                                                selectedCompany.id
-                                            )
-                                        }
+                                        onClick={() => {
+
+                                            setActionType("reject");
+
+                                            setShowReasonModal(true);
+
+                                        }}
                                         className="bg-red-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-red-900/10 hover:bg-red-700"
                                     >
 
@@ -396,35 +480,57 @@ function ManageCompaniesPage() {
                             )}
 
                             {selectedCompany.status === "approved" && (
+                                <>
+                                    <button
+                                        onClick={() => {
 
-                                <button
-                                    onClick={() =>
-                                        blockCompany(
-                                            selectedCompany.id
-                                        )
-                                    }
-                                    className="bg-red-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-red-900/10 hover:bg-red-700"
-                                >
+                                            setActionType("block");
 
-                                    Block Company
+                                            setShowReasonModal(true);
 
-                                </button>
+                                        }}
+                                        className="bg-red-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-red-900/10 hover:bg-red-700"
+                                    >
+
+                                        Block Company
+
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setActionType("delete");
+                                            setShowReasonModal(true);
+                                        }}
+                                        className="bg-gray-900 text-white px-6 py-3 rounded-xl"
+                                    >
+                                        Delete Company
+                                    </button>
+                                </>
                             )}
 
                             {selectedCompany.status === "blocked" && (
+                                <>
+                                    <button
+                                        onClick={() =>
+                                            unblockCompany(
+                                                selectedCompany.id
+                                            )
+                                        }
+                                        className="bg-green-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-green-900/10 hover:bg-green-700"
+                                    >
 
-                                <button
-                                    onClick={() =>
-                                        unblockCompany(
-                                            selectedCompany.id
-                                        )
-                                    }
-                                    className="bg-green-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-green-900/10 hover:bg-green-700"
-                                >
+                                        Unblock Company
 
-                                    Unblock Company
-
-                                </button>
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            setActionType("delete");
+                                            setShowReasonModal(true);
+                                        }}
+                                        className="bg-gray-900 text-white px-6 py-3 rounded-xl"
+                                    >
+                                        Delete Company
+                                    </button>
+                                </>
                             )}
 
                         </div>
@@ -435,6 +541,51 @@ function ManageCompaniesPage() {
 
             )}
 
+            {showReasonModal && (
+                <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100]">
+                    <div className="bg-white w-[500px] rounded-3xl p-8">
+                        <h2 className="text-3xl font-bold mb-6">
+                            {actionType === "reject"
+                                ? "Reject Company"
+                                : actionType === "block"
+                                ? "Block Company"
+                                : "Delete Company"}
+                        </h2>
+                        <textarea
+                            rows={5}
+                            value={reason}
+                            onChange={(e) => setReason(e.target.value)}
+                            placeholder="Enter reason..."
+                            className="w-full border rounded-xl p-4 mb-6"
+                        />
+                        <div className="flex justify-end gap-4">
+                            <button
+                                onClick={() => {
+                                    setShowReasonModal(false);
+                                    setReason("");
+                                }}
+                                className="px-6 py-3 rounded-xl bg-gray-300"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={() => {
+                                    if (actionType === "reject") {
+                                        rejectCompany(selectedCompany.id);
+                                    } else if (actionType === "block") {
+                                        blockCompany(selectedCompany.id);
+                                    } else {
+                                        deleteCompany(selectedCompany.id);
+                                    }
+                                }}
+                                className="px-6 py-3 rounded-xl bg-red-600 text-white"
+                            >
+                                Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </SuperAdminLayout>
     );
 }

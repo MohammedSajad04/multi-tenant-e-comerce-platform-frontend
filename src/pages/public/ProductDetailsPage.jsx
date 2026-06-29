@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import api from "../../services/api";
 import { useCart } from "../../context/CartContext";
 import { useWishlist } from "../../context/WishlistContext";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 function ProductDetailsPage() {
 
@@ -10,10 +11,12 @@ function ProductDetailsPage() {
 
     const navigate = useNavigate();
 
-    const { addToCart } = useCart();
+    const { addToCart, buyNow } = useCart();
 
-    const { addToWishlist } =
-        useWishlist();
+    const {
+    toggleWishlist,
+    isInWishlist
+    } = useWishlist();
 
     const [product, setProduct] = useState(null);
 
@@ -87,11 +90,86 @@ function ProductDetailsPage() {
         );
     }
 
+    const handleBuyNow = () => {
+
+        buyNow({
+
+            ...product,
+
+            quantity
+
+        });
+
+        navigate("/checkout");
+
+    };
+
     return (
 
         <div className="min-h-screen bg-gray-100 flex justify-center items-center p-8">
 
             <div className="bg-white p-10 rounded-2xl border border-gray-200 shadow-sm w-full max-w-2xl">
+
+                <div className="relative mb-8">
+
+                    {product.image && (
+
+                        <img
+
+                            src={`http://127.0.0.1:8000${product.image}`}
+
+                            alt={product.name}
+
+                            className="
+                            w-full
+                            h-96
+                            object-cover
+                            rounded-2xl
+                            cursor-pointer
+                            hover:scale-105
+                            transition
+                            duration-300
+                            "
+
+                            onClick={() => navigate(`/product/${product.id}`)}
+
+                        />
+
+                    )}
+
+                    <button
+
+                        onClick={() => toggleWishlist(product)}
+
+                        className="
+                        absolute
+                        top-4
+                        right-4
+                        bg-white
+                        p-3
+                        rounded-full
+                        shadow-lg
+                        hover:scale-110
+                        transition
+                        "
+
+                    >
+
+                        {isInWishlist(product.id)
+
+                            ?
+
+                            <FaHeart className="text-red-500 text-2xl"/>
+
+                            :
+
+                            <FaRegHeart className="text-gray-600 text-2xl"/>
+
+                        }
+
+                    </button>
+
+                </div>
 
                 <h1 className="text-4xl font-bold mb-4">
 
@@ -105,13 +183,13 @@ function ProductDetailsPage() {
 
                 </p>
 
-                <h2 className="text-3xl font-bold mb-4">
+                <h2 className="text-4xl font-bold text-green-600 mb-4">
 
                     ₹ {product.price}
 
                 </h2>
 
-                <p className="text-gray-500 mb-8">
+                <p className="text-lg text-gray-600 mb-8">
 
                     Available Stock: {product.stock}
 
@@ -136,33 +214,48 @@ function ProductDetailsPage() {
 
                 </div>
 
-                <div className="flex flex-col gap-3">
+                <div className="grid grid-cols-2 gap-4 mt-8">
+
 
                     <button
-                        onClick={() =>
-                            addToWishlist(product)
-                        }
-                        className="
-                        bg-pink-500
-                        text-white
-                        py-4
-                        rounded-xl
-                        "
-                    >
-                        ❤️ Add To Wishlist
-                    </button>
 
-                    <button
-                        onClick={handleAddToCart}
-                        className="
-                        bg-black
-                        text-white
-                        py-4
-                        rounded-xl
-                        "
-                    >
-                        Add To Cart
-                    </button>
+                    onClick={handleAddToCart}
+
+                    className="
+                    bg-black
+                    text-white
+                    py-4
+                    rounded-xl
+                    font-semibold
+                    hover:bg-gray-800
+                    transition
+                    "
+
+                >
+
+                    Add To Cart
+
+                </button>
+
+                <button
+
+                    onClick={handleBuyNow}
+
+                    className="
+                    bg-green-600
+                    text-white
+                    py-4
+                    rounded-xl
+                    font-semibold
+                    hover:bg-green-700
+                    transition
+                    "
+
+                >
+
+                    Buy Now
+
+                </button>
 
                 </div>
 

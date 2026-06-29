@@ -1,21 +1,34 @@
 import {
-
     createContext,
     useContext,
-    useState
-
+    useState,
+    useEffect,
 } from "react";
-
-
 
 const CartContext = createContext();
 
-
-
 export function CartProvider({ children }) {
 
-    const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState(() => {
 
+        const savedCart = localStorage.getItem("cart");
+
+        return savedCart
+            ? JSON.parse(savedCart)
+            : [];
+
+    });
+
+    const [buyNowProduct, setBuyNowProduct] = useState(null);
+
+    useEffect(() => {
+
+        localStorage.setItem(
+            "cart",
+            JSON.stringify(cartItems)
+        );
+
+    }, [cartItems]);
 
 
 
@@ -23,26 +36,28 @@ export function CartProvider({ children }) {
 
         const existing = cartItems.find(
 
-            (item) => item.id === product.id
+            item => item.id === product.id
+
         );
-
-
 
         if (existing) {
 
-            const updated = cartItems.map((item) =>
+            setCartItems(
 
-                item.id === product.id
+                cartItems.map(item =>
 
-                    ? {
-                        ...item,
-                        quantity: item.quantity + 1,
-                    }
+                    item.id === product.id
 
-                    : item
+                        ? {
+                            ...item,
+                            quantity: item.quantity + 1,
+                        }
+
+                        : item
+
+                )
+
             );
-
-            setCartItems(updated);
 
         } else {
 
@@ -54,69 +69,113 @@ export function CartProvider({ children }) {
                     ...product,
                     quantity: 1,
                 }
+
             ]);
+
         }
+
     };
-
-
-
-
-    const increaseQuantity = (id) => {
-
-        const updated = cartItems.map((item) =>
-
-            item.id === id
-
-                ? {
-                    ...item,
-                    quantity: item.quantity + 1,
-                }
-
-                : item
-        );
-
-        setCartItems(updated);
-    };
-
-
-
-
-    const decreaseQuantity = (id) => {
-
-        const updated = cartItems.map((item) =>
-
-            item.id === id && item.quantity > 1
-
-                ? {
-                    ...item,
-                    quantity: item.quantity - 1,
-                }
-
-                : item
-        );
-
-        setCartItems(updated);
-    };
-
 
 
 
     const removeFromCart = (id) => {
 
-        const updated = cartItems.filter(
+        setCartItems(
 
-            (item) => item.id !== id
+            cartItems.filter(
+
+                item => item.id !== id
+
+            )
+
         );
 
-        setCartItems(updated);
     };
 
+
+
+    const increaseQuantity = (id) => {
+
+        setCartItems(
+
+            cartItems.map(item =>
+
+                item.id === id
+
+                    ? {
+
+                        ...item,
+
+                        quantity: item.quantity + 1,
+
+                    }
+
+                    : item
+
+            )
+
+        );
+
+    };
+
+
+
+    const decreaseQuantity = (id) => {
+
+        setCartItems(
+
+            cartItems.map(item =>
+
+                item.id === id && item.quantity > 1
+
+                    ? {
+
+                        ...item,
+
+                        quantity: item.quantity - 1,
+
+                    }
+
+                    : item
+
+            )
+
+        );
+
+    };
 
 
 
     const clearCart = () => {
 
         setCartItems([]);
+
+    };
+
+
+
+    // ===========================
+    // BUY NOW
+    // ===========================
+
+    const buyNow = (product) => {
+
+        setBuyNowProduct({
+
+            ...product,
+
+            quantity: 1,
+
+        });
+
+    };
+
+
+
+    const clearBuyNow = () => {
+
+        setBuyNowProduct(null);
+
     };
 
 
@@ -124,22 +183,37 @@ export function CartProvider({ children }) {
     return (
 
         <CartContext.Provider
+
             value={{
+
                 cartItems,
+
                 addToCart,
+
                 removeFromCart,
-                clearCart,
+
                 increaseQuantity,
+
                 decreaseQuantity,
+
+                clearCart,
+
+                buyNowProduct,
+
+                buyNow,
+
+                clearBuyNow,
+
             }}
+
         >
 
             {children}
 
         </CartContext.Provider>
-    )
+
+    );
+
 }
-
-
 
 export const useCart = () => useContext(CartContext);

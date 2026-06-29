@@ -66,7 +66,7 @@ import AIAssistant from "./pages/company/AIAssistant";
 
 import AIAssistantPage from "./pages/public/AIAssistantPage";
 
-import ProductsPage from "./pages/public/ProductsPage";
+import ProductsCatalogPage from "./pages/public/ProductsCatalogPage";
 
 function App() {
 
@@ -335,10 +335,10 @@ function App() {
       }
   />
     <Route
-      path="/products"
+      path="/products-list"
       element={
           <CustomerRoute>
-              <ProductsPage />
+              <ProductsCatalogPage  />
           </CustomerRoute>
       }
   />
